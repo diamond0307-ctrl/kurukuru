@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="空気の流れで静かに回るインテリアギフト「くるくる」。大切な人へ、やさしい流れを贈るための静かなLPです。"
+    />
+    <title>くるくる | 大切な人へ、やさしい流れを贈る。</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #ffffff;
+        --paper-soft: #f6f6f4;
+        --ink: #050505;
+        --muted: #2e2e2e;
+        --line: #d7d7d2;
+        --accent: #050505;
+        --white: #ffffff;
+        --max: 1180px;
+        --sans: "Noto Sans JP", system-ui, sans-serif;
+        --serif: "Noto Serif JP", serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.95;
+        letter-spacing: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      p,
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+      }
+
+      .page {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page::before {
+        position: fixed;
+        top: 64px;
+        right: -14vw;
+        z-index: 0;
+        width: min(1040px, 110vw);
+        aspect-ratio: 1366 / 768;
+        background: url("assets/kurukuru-squares-bg.png") center / cover no-repeat;
+        content: "";
+        filter: grayscale(1) contrast(1.12);
+        mix-blend-mode: multiply;
+        opacity: 0.1;
+        pointer-events: none;
+      }
+
+      .page > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .site-header {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 20;
+        border-bottom: 1px solid rgba(215, 215, 210, 0.82);
+        background: rgba(255, 255, 255, 0.86);
+        backdrop-filter: blur(14px);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: min(var(--max), calc(100% - 48px));
+        min-height: 72px;
+        margin: 0 auto;
+      }
+
+      .brand {
+        font-family: var(--serif);
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .header-note {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .hero,
+      .section {
+        width: min(var(--max), calc(100% - 48px));
+        margin: 0 auto;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.82fr) minmax(420px, 1.18fr);
+        gap: clamp(30px, 5vw, 68px);
+        align-items: center;
+        min-height: 88svh;
+        padding: 104px 0 48px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.5;
+      }
+
+      .eyebrow::before {
+        width: 42px;
+        height: 1px;
+        background: var(--accent);
+        content: "";
+      }
+
+      .hero-title,
+      .section-title {
+        font-family: var(--serif);
+        font-weight: 600;
+        line-height: 1.32;
+      }
+
+      .hero-title {
+        max-width: 760px;
+        font-size: clamp(42px, 6.2vw, 74px);
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 470px;
+        margin-top: 30px;
+        font-size: clamp(17px, 1.8vw, 22px);
+        line-height: 1.95;
+      }
+
+      .hero-meta {
+        display: grid;
+        gap: 8px;
+        max-width: 430px;
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.8;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        margin-top: 30px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 30px;
+        border: 1px solid var(--ink);
+        background: transparent;
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1;
+        transition:
+          border-color 180ms ease,
+          background 180ms ease,
+          color 180ms ease;
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--white);
+        outline: none;
+      }
+
+      .button.secondary {
+        border-color: var(--line);
+        color: var(--muted);
+      }
+
+      .gift-tags {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .visual {
+        position: relative;
+        aspect-ratio: 4 / 5;
+        min-height: 500px;
+        border: 1px solid var(--line);
+        background: var(--paper-soft);
+        overflow: hidden;
+      }
+
+      .visual::before {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(180deg, rgba(30, 30, 30, 0) 55%, rgba(30, 30, 30, 0.2));
+        content: "";
+        pointer-events: none;
+      }
+
+      .visual img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 52% center;
+      }
+
+      .mobile-caption {
+        position: absolute;
+        right: 24px;
+        bottom: 22px;
+        z-index: 2;
+        width: min(270px, calc(100% - 48px));
+        padding: 14px 0 0 18px;
+        border-top: 1px solid rgba(247, 244, 238, 0.72);
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .video-block {
+        width: min(var(--max), calc(100% - 48px));
+        margin: 0 auto;
+        padding: 0 0 clamp(54px, 7vw, 84px);
+      }
+
+      .video-frame {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        border: 1px solid var(--line);
+        background: var(--paper-soft);
+        overflow: hidden;
+      }
+
+      .video-frame iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .section {
+        display: grid;
+        grid-template-columns: 0.46fr 1fr;
+        gap: clamp(28px, 5vw, 72px);
+        padding: clamp(64px, 8vw, 104px) 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .section-kicker {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .section-title {
+        max-width: 720px;
+        font-size: clamp(30px, 4vw, 52px);
+      }
+
+      .section-body {
+        max-width: 720px;
+      }
+
+      .lead {
+        margin-top: 24px;
+        font-size: clamp(16px, 1.55vw, 19px);
+        line-height: 1.95;
+      }
+
+      .body-text {
+        margin-top: 22px;
+        color: #111111;
+        font-size: 16px;
+        line-height: 1.95;
+      }
+
+      .subhead {
+        margin-top: 36px;
+        font-family: var(--serif);
+        font-size: clamp(22px, 2.4vw, 32px);
+        font-weight: 600;
+        line-height: 1.55;
+      }
+
+      .reason-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        margin-top: 22px;
+        background: var(--line);
+        border: 1px solid var(--line);
+      }
+
+      .reason-card {
+        min-height: 196px;
+        padding: 24px;
+        background: var(--paper);
+      }
+
+      .number {
+        display: block;
+        margin-bottom: 22px;
+        color: var(--accent);
+        font-family: var(--serif);
+        font-size: 18px;
+      }
+
+      .reason-card h3,
+      .voice h3 {
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.7;
+      }
+
+      .reason-card p,
+      .voice p {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.9;
+      }
+
+      .scene-list,
+      .feature-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+        margin-top: 28px;
+        padding: 0;
+        border: 1px solid var(--line);
+        background: var(--line);
+        list-style: none;
+      }
+
+      .concept-pattern {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .concept-pattern::before {
+        position: absolute;
+        inset: 20px 0;
+        z-index: -1;
+        border-top: 1px solid var(--line);
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.78) 44%, rgba(255, 255, 255, 0.3) 100%),
+          url("assets/kurukuru-mobile-pattern.png") center / cover no-repeat;
+        content: "";
+        filter: saturate(0.75) contrast(1.02);
+      }
+
+      .concept-pattern .section-body {
+        max-width: 680px;
+        padding: clamp(22px, 4vw, 44px);
+        border: 1px solid rgba(215, 215, 210, 0.8);
+        background: rgba(255, 255, 255, 0.84);
+        backdrop-filter: blur(2px);
+      }
+
+      .concept-pattern + .section {
+        border-top: 0;
+      }
+
+      .feature-showcase {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(210px, 0.52fr);
+        gap: clamp(20px, 4vw, 42px);
+        align-items: end;
+        margin-top: 28px;
+      }
+
+      .feature-showcase .feature-list {
+        margin-top: 0;
+      }
+
+      .product-gallery {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(18px, 3vw, 32px);
+        margin: 0;
+        border: 0;
+        background: transparent;
+      }
+
+      .product-figure {
+        margin: 0;
+        background: transparent;
+      }
+
+      .product-figure img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: contain;
+        padding: 0;
+        mix-blend-mode: multiply;
+      }
+
+      .scene-list li,
+      .feature-list li {
+        min-height: 62px;
+        padding: 18px 22px;
+        background: var(--paper);
+        font-size: 15px;
+      }
+
+      .quiet-panel {
+        margin-top: 30px;
+        padding: clamp(24px, 4vw, 42px);
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .quiet-panel p {
+        font-family: var(--serif);
+        font-size: clamp(21px, 2.5vw, 34px);
+        line-height: 1.9;
+      }
+
+      .story {
+        position: relative;
+        background: rgba(246, 246, 244, 0.92);
+        overflow: hidden;
+      }
+
+      .story::before {
+        position: absolute;
+        inset: auto -120px -70px auto;
+        width: min(560px, 66vw);
+        aspect-ratio: 1366 / 768;
+        background: url("assets/kurukuru-mobile-pattern.png") center / cover no-repeat;
+        content: "";
+        filter: saturate(0.6) contrast(1.1);
+        mix-blend-mode: multiply;
+        opacity: 0.11;
+      }
+
+      .story .section {
+        border-top: 1px solid rgba(30, 30, 30, 0.15);
+      }
+
+      .story-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(230px, 0.54fr);
+        gap: clamp(28px, 5vw, 54px);
+        align-items: start;
+        margin-top: 28px;
+      }
+
+      .story-text {
+        max-width: 760px;
+        font-family: var(--serif);
+        font-size: clamp(18px, 1.85vw, 24px);
+        line-height: 1.9;
+      }
+
+      .story-text p + p {
+        margin-top: 20px;
+      }
+
+      .story-photo {
+        position: sticky;
+        top: 104px;
+        margin: 0;
+        border: 1px solid var(--line);
+        background: var(--paper);
+      }
+
+      .story-photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+      }
+
+      .story-photo figcaption {
+        padding: 12px 14px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      .voices {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+        margin-top: 28px;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .voice {
+        min-height: 132px;
+        padding: 26px;
+        background: var(--paper);
+      }
+
+      .voice h3 {
+        font-family: var(--serif);
+        font-size: clamp(18px, 1.9vw, 24px);
+        font-weight: 500;
+      }
+
+      .limit-mark {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: min(260px, 70vw);
+        aspect-ratio: 1;
+        margin-top: 30px;
+        border: 1px solid var(--accent);
+        border-radius: 50%;
+        color: var(--accent);
+        font-family: var(--serif);
+        font-size: clamp(46px, 7vw, 76px);
+        line-height: 1;
+        text-align: center;
+      }
+
+      .limit-mark span {
+        display: block;
+        margin-top: 12px;
+        font-family: var(--sans);
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .closing {
+        position: relative;
+        width: min(var(--max), calc(100% - 48px));
+        margin: 0 auto;
+        padding: clamp(68px, 9vw, 118px) 0 clamp(56px, 7vw, 86px);
+        border-top: 1px solid var(--line);
+        text-align: center;
+      }
+
+      .closing::before {
+        display: block;
+        width: min(720px, 100%);
+        aspect-ratio: 16 / 8.5;
+        margin: 0 auto clamp(34px, 5vw, 56px);
+        border: 1px solid var(--line);
+        background: url("assets/kurukuru-interior.png") center / cover no-repeat;
+        content: "";
+      }
+
+      .closing .section-title,
+      .closing .body-text {
+        margin-right: auto;
+        margin-left: auto;
+      }
+
+      .closing .actions {
+        justify-content: center;
+      }
+
+      .footer {
+        width: min(var(--max), calc(100% - 48px));
+        margin: 0 auto;
+        padding: 30px 0 46px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        transition:
+          opacity 700ms ease,
+          transform 700ms ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        .button,
+        .reveal {
+          transition: none;
+        }
+
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .header-inner,
+        .hero,
+        .video-block,
+        .section,
+        .closing,
+        .footer {
+          width: min(100% - 32px, var(--max));
+        }
+
+        .header-inner {
+          min-height: 62px;
+        }
+
+        .header-note {
+          display: none;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+          min-height: auto;
+          padding: 92px 0 48px;
+        }
+
+        .hero-copy {
+          margin-top: 24px;
+        }
+
+        .visual {
+          aspect-ratio: 16 / 11;
+          min-height: 0;
+        }
+
+        .section {
+          grid-template-columns: 1fr;
+          gap: 18px;
+          padding: 60px 0;
+        }
+
+        .section-kicker {
+          padding-bottom: 12px;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .concept-pattern::before {
+          inset: 0;
+          background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.78) 58%, rgba(255, 255, 255, 0.42) 100%),
+            url("assets/kurukuru-mobile-pattern.png") center / cover no-repeat;
+        }
+
+        .concept-pattern .section-body {
+          max-width: none;
+        }
+
+        .reason-grid,
+        .voices {
+          grid-template-columns: 1fr;
+        }
+
+        .story-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .story-photo {
+          position: static;
+          width: min(420px, 100%);
+        }
+
+        .feature-showcase {
+          grid-template-columns: 1fr;
+        }
+
+        .product-gallery {
+          width: min(460px, 100%);
+        }
+      }
+
+      @media (max-width: 560px) {
+        body {
+          font-size: 15px;
+          line-height: 1.95;
+        }
+
+        .hero-title,
+        .section-title {
+          line-height: 1.42;
+        }
+
+        .hero-title {
+          font-size: clamp(38px, 12vw, 44px);
+        }
+
+        .hero-copy,
+        .lead,
+        .body-text {
+          line-height: 1.9;
+        }
+
+        .actions {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .button {
+          width: 100%;
+          min-height: 54px;
+        }
+
+        .gift-tags {
+          line-height: 1.8;
+        }
+
+        .visual {
+          aspect-ratio: 4 / 5;
+        }
+
+        .section {
+          padding: 52px 0;
+        }
+
+        .concept-pattern .section-body {
+          padding: 22px 18px;
+        }
+
+        .scene-list,
+        .feature-list {
+          grid-template-columns: 1fr;
+        }
+
+        .scene-list li,
+        .feature-list li {
+          min-height: 54px;
+          padding: 15px 18px;
+        }
+
+        .reason-card,
+        .voice {
+          min-height: auto;
+          padding: 20px 18px;
+        }
+
+        .number {
+          margin-bottom: 20px;
+        }
+
+        .quiet-panel {
+          padding: 22px 18px;
+        }
+
+        .closing {
+          text-align: left;
+        }
+
+        .closing .actions {
+          justify-content: stretch;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="site-header" aria-label="サイトヘッダー">
+        <div class="header-inner">
+          <a class="brand" href="#top">くるくる</a>
+          <p class="header-note">年間2000個限定 / 2年連続完売</p>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-content reveal">
+            <p class="eyebrow">Interior gift for good flow</p>
+            <h1 class="hero-title" id="hero-title">大切な人へ、<br />やさしい流れを贈る。</h1>
+            <p class="hero-copy">
+              空気の流れで静かに回る<br />
+              インテリアギフト「くるくる」。
+            </p>
+            <p class="hero-meta">
+              <span>年間2000個限定。2年連続完売。</span>
+              <span>新築祝い・開店祝い・結婚祝い・引越し祝い・転職祝いに</span>
+            </p>
+            <div class="actions">
+              <a class="button" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">在庫を確認する</a>
+            </div>
+          </div>
+          <div class="visual reveal" aria-label="空気の流れで静かに回るくるくるの室内写真">
+            <img
+              src="assets/kurukuru-interior.png"
+              alt="モダンな室内に置かれた黄色い羽のインテリアギフト、くるくる"
+            />
+            <p class="mobile-caption">目に見えない空気の流れを、静かな動きとして空間に映す。</p>
+          </div>
+        </section>
+
+        <section class="video-block reveal" aria-label="くるくるの動画">
+          <div class="video-frame">
+            <iframe
+              src="https://www.youtube.com/embed/D85maVpUxhQ?autoplay=1&mute=1&loop=1&playlist=D85maVpUxhQ&playsinline=1&rel=0&modestbranding=1"
+              title="くるくるの紹介動画"
+              allow="autoplay; encrypted-media; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </section>
+
+        <section class="section reveal concept-pattern" aria-labelledby="concept-title">
+          <p class="section-kicker">01 / Concept</p>
+          <div class="section-body">
+            <h2 class="section-title" id="concept-title">良い流れは、<br />贈ることができる。</h2>
+            <p class="lead">
+              くるくるは、目に見えない空気の流れを可視化し、
+              空間にやさしい変化をもたらすインテリアです。
+            </p>
+            <p class="body-text">
+              わずかな風で、静かに回る。<br />
+              その動きは、見る人の心をそっと整え、日常に前向きな流れを生み出します。
+            </p>
+          </div>
+        </section>
+
+        <section class="section reveal" aria-labelledby="reason-title">
+          <p class="section-kicker">02 / Gift Reason</p>
+          <div class="section-body">
+            <h2 class="section-title" id="reason-title">意味のある贈り物を。</h2>
+            <p class="lead">
+              大切な人への贈り物ほど、何を選べばいいか迷ってしまう。
+            </p>
+            <p class="body-text">
+              ありきたりすぎても違う。高すぎても気を使わせる。
+              でも、ちゃんと想いは伝えたい。
+              そんなときに選ばれているのが、“意味のあるギフト”としての「くるくる」です。
+            </p>
+            <h3 class="subhead">“センスいいね”と言われる贈り物。</h3>
+            <div class="reason-grid">
+              <article class="reason-card">
+                <span class="number">01</span>
+                <h3>インテリアとして美しい</h3>
+                <p>置くだけで空間の印象が変わります。</p>
+              </article>
+              <article class="reason-card">
+                <span class="number">02</span>
+                <h3>誰に贈っても外しにくい</h3>
+                <p>年齢や性別を問わず、暮らしに馴染みます。</p>
+              </article>
+              <article class="reason-card">
+                <span class="number">03</span>
+                <h3>想いが伝わる</h3>
+                <p>「いい流れを贈る」という意味があるから、ただのモノではなく、気持ちごと届けられます。</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section reveal" aria-labelledby="scene-title">
+          <p class="section-kicker">03 / Gift Scene</p>
+          <div class="section-body">
+            <h2 class="section-title" id="scene-title">人生の節目に、<br />静かな祝福を。</h2>
+            <p class="lead">人生の節目に、いい流れを。</p>
+            <ul class="scene-list" aria-label="ギフトシーン">
+              <li>新築祝い</li>
+              <li>開店祝い</li>
+              <li>結婚祝い</li>
+              <li>引越し祝い</li>
+              <li>転職祝い</li>
+              <li>退職祝い</li>
+              <li>誕生日</li>
+              <li>大切な人への応援ギフト</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section reveal" aria-labelledby="care-title">
+          <p class="section-kicker">04 / With Care</p>
+          <div class="section-body">
+            <h2 class="section-title" id="care-title">言葉にしきれない想いを、<br />静かな動きとともに届ける。</h2>
+            <p class="lead">
+              くるくるは、闘病中の方、入院中の方、心を落ち着けてほしい方への贈り物としても選ばれています。
+            </p>
+            <div class="quiet-panel">
+              <p>
+                がんばって。<br />
+                無理しないで。<br />
+                いつも想っているよ。
+              </p>
+            </div>
+            <p class="body-text">
+              そんな言葉にしにくい気持ちを、やさしい流れにのせて届けます。
+            </p>
+          </div>
+        </section>
+
+        <div class="story">
+          <section class="section reveal" aria-labelledby="story-title">
+            <p class="section-kicker">05 / Story</p>
+            <div class="section-body">
+              <h2 class="section-title" id="story-title">前を向く時間から、<br />生まれたもの。</h2>
+              <div class="story-layout">
+                <div class="story-text">
+                  <p>
+                    この「くるくる」は、闘病中の祖母と一緒に制作していました。
+                  </p>
+                  <p>
+                    抗がん剤治療の中でも、制作に夢中になる時間は、前を向ける時間でした。
+                  </p>
+                  <p>
+                    「2000個のくるくるを届けよう」
+                  </p>
+                  <p>
+                    そう決めて、2人で作り続けました。そして、すべての制作と発送を終えた直後、祖母の癌は、奇跡のように姿を消しました。
+                  </p>
+                  <p>
+                    だから、くるくるは単なるインテリアではありません。誰かが前を向くきっかけになる。空間と心に、やさしい流れを生む。
+                  </p>
+                  <p>
+                    これは何かを治すためのものではなく、前を向ける時間の記憶として大切にしている出来事です。
+                  </p>
+                  <p>
+                    そんな想いから生まれたギフトです。
+                  </p>
+                </div>
+                <figure class="story-photo">
+                  <img src="assets/kurukuru-story.jpg" alt="くるくるを制作した祖母と作者の写真" />
+                  <figcaption>前を向く時間を、ともに作り続けた記憶。</figcaption>
+                </figure>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="section reveal" aria-labelledby="feature-title">
+          <p class="section-kicker">06 / Feature</p>
+          <div class="section-body">
+            <h2 class="section-title" id="feature-title">わずかな風で回る<br />静かで心地いい動き。</h2>
+            <p class="lead">置くだけで、空間が変わる。</p>
+            <div class="feature-showcase">
+              <ul class="feature-list" aria-label="商品特徴">
+                <li>電気不要</li>
+                <li>わずかな風で回る</li>
+                <li>静かで心地いい動き</li>
+                <li>インテリアに馴染むデザイン</li>
+                <li>ひとつひとつ手作業で制作</li>
+              </ul>
+              <div class="product-gallery" aria-label="くるくるのカラーバリエーション">
+                <figure class="product-figure">
+                  <img src="assets/kurukuru-product.jpg" alt="黄色い羽のくるくる" />
+                </figure>
+                <figure class="product-figure">
+                  <img src="assets/kurukuru-orange.jpg" alt="オレンジの羽のくるくる" />
+                </figure>
+                <figure class="product-figure">
+                  <img src="assets/kurukuru-blue.jpg" alt="ブルーの羽のくるくる" />
+                </figure>
+                <figure class="product-figure">
+                  <img src="assets/kurukuru-black.jpg" alt="ブラックの羽のくるくる" />
+                </figure>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section reveal" aria-labelledby="voice-title">
+          <p class="section-kicker">07 / Voice</p>
+          <div class="section-body">
+            <h2 class="section-title" id="voice-title">贈った人にも、<br />贈られた人にも喜ばれています。</h2>
+            <div class="voices" aria-label="お客様の声">
+              <article class="voice">
+                <h3>「贈った相手が、本当に喜んでくれました。」</h3>
+              </article>
+              <article class="voice">
+                <h3>「センスいいねって言われました。」</h3>
+              </article>
+              <article class="voice">
+                <h3>「自分用にも欲しくなりました。」</h3>
+              </article>
+              <article class="voice">
+                <h3>「開店祝いに贈ったら、お店の雰囲気にぴったりでした。」</h3>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section reveal" aria-labelledby="limited-title">
+          <p class="section-kicker">08 / Limited</p>
+          <div class="section-body">
+            <h2 class="section-title" id="limited-title">一年に、<br />2000個だけ。</h2>
+            <p class="lead">
+              ひとつひとつ手作業で制作しているため、年間2000個限定での販売です。
+            </p>
+            <p class="body-text">
+              ありがたいことに、2年連続で完売しています。
+              大切な方への贈り物をお考えの方は、お早めに在庫をご確認ください。
+            </p>
+            <div class="limit-mark" aria-hidden="true">
+              2000
+              <span>per year</span>
+            </div>
+            <div class="actions">
+              <a class="button secondary" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">公式ショップで見る</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="closing reveal" aria-labelledby="closing-title">
+          <h2 class="section-title" id="closing-title">大切な人へ、<br />やさしい流れを贈る。</h2>
+          <p class="body-text">
+            「くるくる」という小さな選択が、誰かの空間に、そして日常に、
+            そっと前向きな変化をもたらします。
+          </p>
+          <p class="lead">
+            良い流れは、<br />贈ることができる。
+          </p>
+          <div class="actions">
+            <a class="button" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">ギフトとして選ぶ</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Kurukuru / Interior gift. Official shop links open in a new tab.</p>
+      </footer>
+    </div>
+
+    <script>
+      const targets = document.querySelectorAll(".reveal");
+
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.18 }
+        );
+
+        targets.forEach((target) => observer.observe(target));
+      } else {
+        targets.forEach((target) => target.classList.add("is-visible"));
+      }
+    </script>
+  </body>
+</html>
