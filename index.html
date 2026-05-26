@@ -91,6 +91,55 @@
 /* 30-piece dynamic outward spread. */
 .hero-spread-visual{min-height:700px}.spread-photo{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;width:min(480px,37vw)!important;transform-origin:center center}.spread-photo img{object-fit:contain!important}.spread-logo{width:min(230px,30vw)}@media (max-width:900px){.hero-spread-visual{min-height:58svh}.spread-photo{width:min(410px,85vw)!important}.spread-logo{width:min(200px,48vw)}}@media (max-width:560px){.hero-spread-visual{min-height:52svh}.spread-photo{width:min(330px,90vw)!important}}
 
+
+
+/* Reliable GSAP scroll spread override: mobile and desktop. */
+.hero-spread{
+  min-height:320svh!important;
+  align-items:start!important;
+  overflow:clip!important;
+}
+.hero-spread .hero-content{
+  position:relative!important;
+  padding-top:clamp(24px,7svh,86px)!important;
+}
+.hero-spread-visual{
+  position:sticky!important;
+  top:84px!important;
+  height:calc(100svh - 104px)!important;
+  min-height:520px!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+}
+.spread-logo{
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  transform-origin:center center!important;
+}
+.spread-photo{
+  left:50%!important;
+  top:50%!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:clamp(260px,34vw,520px)!important;
+  aspect-ratio:1!important;
+  transform-origin:center center!important;
+  opacity:0;
+}
+.spread-photo img{background:transparent!important;}
+@media (max-width:900px){
+  .hero-spread{min-height:330svh!important;}
+  .hero-spread .hero-content{padding-top:0!important;}
+  .hero-spread-visual{order:-1;top:74px!important;height:58svh!important;min-height:430px!important;}
+  .spread-photo{width:clamp(220px,76vw,420px)!important;}
+}
+@media (max-width:560px){
+  .hero-spread{min-height:345svh!important;}
+  .hero-spread-visual{height:56svh!important;min-height:360px!important;}
+  .spread-photo{width:clamp(190px,82vw,340px)!important;}
+}
+
 </style>
 </head>
 <body>
@@ -164,56 +213,96 @@ if('IntersectionObserver'in window){
 }
 
 window.addEventListener('load',()=>{
-  if(!window.gsap || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    document.documentElement.classList.add('hero-ready');
+  const hero=document.querySelector('.hero-spread');
+  const photos=Array.from(document.querySelectorAll('.spread-photo'));
+  const spreadLogo=document.querySelector('.spread-logo');
+  const content=document.querySelectorAll('.hero-spread .hero-content, .hero-spread > .actions');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.classList.add('hero-ready');
+  if(!hero || !photos.length || reduce){
+    content.forEach((el)=>{el.style.opacity='1';el.style.transform='none'});
     return;
   }
 
-  gsap.registerPlugin(ScrollTrigger);
-  document.documentElement.classList.add('hero-ready');
+  const hasGsap=!!window.gsap;
+  const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+  const ease=(t)=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  let states=[];
 
-  const photos = gsap.utils.toArray('.spread-photo');
-  const endStates = photos.map((_,i)=>{
-    const angle = (i / photos.length) * Math.PI * 2 - Math.PI / 2;
-    const ring = i % 3;
-    const distance = ring === 0 ? 145 : ring === 1 ? 178 : 212;
-    const wobble = ((i * 37) % 31) - 15;
-    return {
-      x: Math.cos(angle) * distance + 'vw',
-      y: Math.sin(angle) * distance * 0.62 + wobble + 'vh',
-      rotation: ((i * 47) % 96) - 48,
-      scale: ring === 0 ? .42 : ring === 1 ? .36 : .3
-    };
-  });
+  function buildStates(){
+    const vw=window.innerWidth;
+    const vh=window.innerHeight;
+    const base=Math.max(vw,vh);
+    states=photos.map((_,i)=>{
+      const count=photos.length;
+      const angle=(i/count)*Math.PI*2-Math.PI/2+((i%5)-2)*0.045;
+      const ring=i%4;
+      const distance=base*(ring===0?1.55:ring===1?1.9:ring===2?2.25:2.62);
+      const drift=((i*41)%37)-18;
+      return {
+        x:Math.cos(angle)*distance,
+        y:Math.sin(angle)*distance*0.86+drift*vh/100,
+        rotation:((i*47)%140)-70,
+        startScale:ring===0?.18:ring===1?.16:ring===2?.145:.13,
+        endScale:ring===0?.72:ring===1?.64:ring===2?.56:.5
+      };
+    });
+  }
 
-  gsap.set('.hero-logo-stage',{autoAlpha:0,pointerEvents:'none'});
-  gsap.set('.hero-logo-mark',{autoAlpha:0});
-  gsap.set('.spread-logo',{autoAlpha:1,scale:1,xPercent:-50,yPercent:-50});
-  gsap.set(photos,{autoAlpha:0,scale:.08,xPercent:-50,yPercent:-50,rotation:0,filter:'blur(8px)'});
-  gsap.set('.hero-spread .hero-content, .hero-spread > .actions',{autoAlpha:0,y:24});
+  function setStyles(el,vars){
+    if(hasGsap){gsap.set(el,vars);return;}
+    const x=vars.x||0;
+    const y=vars.y||0;
+    const xp=vars.xPercent||0;
+    const yp=vars.yPercent||0;
+    const s=vars.scale==null?1:vars.scale;
+    const r=vars.rotation||0;
+    el.style.opacity=vars.autoAlpha==null?vars.opacity??'':vars.autoAlpha;
+    el.style.visibility=(vars.autoAlpha===0)?'hidden':'visible';
+    el.style.filter=vars.filter||'';
+    el.style.transform='translate('+xp+'%, '+yp+'%) translate('+x+'px, '+y+'px) rotate('+r+'deg) scale('+s+')';
+  }
 
-  const intro = gsap.timeline({defaults:{ease:'power3.out'}});
-  intro.to('.spread-logo',{scale:.82,duration:.7})
-    .to(photos,{autoAlpha:1,scale:.2,filter:'blur(0px)',duration:.8,stagger:{each:.018,from:'center'}},'<+.12')
-    .to('.hero-spread .hero-content, .hero-spread > .actions',{autoAlpha:1,y:0,duration:.75,stagger:.08},'-=.25');
+  buildStates();
+  setStyles(document.querySelector('.hero-logo-stage'),{autoAlpha:0});
+  photos.forEach((el,i)=>setStyles(el,{xPercent:-50,yPercent:-50,x:0,y:0,scale:states[i].startScale,rotation:0,autoAlpha:1,filter:'blur(0px)'}));
+  if(spreadLogo)setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1,autoAlpha:1});
+  content.forEach((el)=>setStyles(el,{autoAlpha:1,y:0}));
 
-  const spread = gsap.timeline({
-    defaults:{ease:'none'},
-    scrollTrigger:{
-      trigger:'.hero-spread',
-      start:'top top',
-      end:'+=190%',
-      scrub:true,
-      pin:true,
-      anticipatePin:1
+  let ticking=false;
+  function progress(){
+    const rect=hero.getBoundingClientRect();
+    const total=Math.max(1,hero.offsetHeight-window.innerHeight);
+    return clamp(-rect.top/total,0,1);
+  }
+  function render(){
+    ticking=false;
+    const raw=progress();
+    const p=ease(raw);
+    const fadeOut=clamp((p-.86)/.14,0,1);
+    photos.forEach((el,i)=>{
+      const state=states[i];
+      const scale=state.startScale+(state.endScale-state.startScale)*p;
+      setStyles(el,{xPercent:-50,yPercent:-50,x:state.x*p,y:state.y*p,scale,rotation:state.rotation*p,autoAlpha:1-fadeOut,filter:fadeOut>.55?'blur(2px)':'blur(0px)'});
+    });
+    if(spreadLogo){
+      setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1-.72*p,autoAlpha:clamp(1-p*1.35,0,1)});
     }
-  });
+    content.forEach((el)=>setStyles(el,{autoAlpha:clamp(1-p*.95,.12,1),y:-42*p}));
+  }
+  function requestRender(){
+    if(ticking)return;
+    ticking=true;
+    requestAnimationFrame(render);
+  }
 
-  spread.to('.spread-logo',{scale:.24,autoAlpha:0,duration:.42},0);
-  photos.forEach((el,i)=>{
-    spread.to(el,{...endStates[i], xPercent:0, yPercent:0, autoAlpha:0, filter:'blur(3px)', duration:1},0);
-  });
-  spread.to('.hero-spread .hero-content, .hero-spread > .actions',{y:-30,autoAlpha:.18,duration:.65},.1);
+  if(hasGsap){
+    gsap.fromTo(photos,{autoAlpha:0,scale:.05,filter:'blur(8px)'},{autoAlpha:1,scale:(i)=>states[i].startScale,filter:'blur(0px)',duration:.9,stagger:{each:.015,from:'center'},ease:'power3.out',onUpdate:requestRender,onComplete:requestRender});
+    if(spreadLogo)gsap.fromTo(spreadLogo,{scale:.82,autoAlpha:0},{scale:1,autoAlpha:1,duration:.55,ease:'power3.out'});
+  }
+  render();
+  window.addEventListener('scroll',requestRender,{passive:true});
+  window.addEventListener('resize',()=>{buildStates();requestRender();},{passive:true});
 });
 </script>
 </body>
