@@ -71,13 +71,50 @@
 .voice-rating span{margin-left:10px;color:var(--ink);font-weight:500;letter-spacing:0;}
 .voice-note{margin-top:24px;text-align:center;color:var(--muted);font-family:var(--serif);font-size:clamp(18px,2vw,24px);line-height:1.8;}
 @media (min-width:901px){section[aria-labelledby="voice-title"] .section-body{max-width:980px}.voices{grid-template-columns:1fr;gap:14px;border:0;background:transparent}.voice{border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.9)}}
+
+
+/* HUMAN MADE inspired hero: transparent logo first, many small product photos spread out. */
+.hero-spread{position:relative;grid-template-columns:minmax(320px,.72fr) minmax(560px,1.28fr);min-height:100svh;padding-top:96px;overflow:hidden;isolation:isolate}.hero-spread:before{position:absolute;inset:72px 0 0;background:radial-gradient(circle at 58% 42%,rgba(0,0,0,.045),transparent 28%),linear-gradient(90deg,transparent 0 18%,rgba(0,0,0,.035) 18% 18.08%,transparent 18.08% 100%);content:"";z-index:-2}.hero-logo-stage{position:absolute;inset:0;z-index:8;display:grid;place-items:center;background:transparent;animation:none!important;pointer-events:none}.hero-logo-mark{width:min(360px,58vw);height:auto;animation:none!important}.hero-spread .hero-content{z-index:3}.hero-spread-visual{position:relative;z-index:2;min-height:640px}.spread-logo{position:absolute;left:50%;top:50%;z-index:4;width:min(250px,32vw);height:auto;transform:translate(-50%,-50%);animation:none!important}.spread-photo{position:absolute;margin:0;background:transparent!important;box-shadow:none!important;overflow:visible!important;animation:none!important}.spread-photo img{display:block;width:100%;height:100%;object-fit:contain!important;mix-blend-mode:normal!important}.spread-photo-a{left:4%;top:8%;width:min(178px,16vw);aspect-ratio:1;--r:-10deg}.spread-photo-b{right:4%;top:18%;width:min(196px,17vw);aspect-ratio:1;--r:8deg}.spread-photo-c{left:34%;bottom:4%;width:min(188px,16vw);aspect-ratio:1;--r:3deg}.spread-photo-d{left:20%;top:30%;width:min(146px,13vw);aspect-ratio:1;--r:-4deg}.spread-photo-e{right:26%;top:4%;width:min(142px,12vw);aspect-ratio:1;--r:11deg}.spread-photo-f{right:18%;bottom:14%;width:min(152px,13vw);aspect-ratio:1;--r:-7deg}.spread-photo-g{left:10%;bottom:20%;width:min(138px,12vw);aspect-ratio:1;--r:7deg}.spread-photo-h{left:52%;top:32%;width:min(132px,12vw);aspect-ratio:1;--r:-12deg}.hero-spread>.actions{grid-column:1;z-index:3;align-self:start;margin-top:-72px}@media (max-width:900px){.hero-spread{grid-template-columns:1fr;min-height:100svh;padding-top:88px}.hero-spread-visual{order:-1;min-height:58svh;margin-top:18px}.spread-logo{width:min(210px,50vw)}.spread-photo-a{left:0;top:5%;width:30vw}.spread-photo-b{right:2%;top:22%;width:31vw}.spread-photo-c{left:31%;bottom:0;width:30vw}.spread-photo-d{left:18%;top:35%;width:24vw}.spread-photo-e{right:20%;top:2%;width:23vw}.spread-photo-f{right:10%;bottom:13%;width:25vw}.spread-photo-g{left:2%;bottom:19%;width:23vw}.spread-photo-h{left:52%;top:44%;width:22vw}.hero-spread>.actions{grid-column:auto;width:100%;margin-top:0}}@media (max-width:560px){.hero-spread{gap:18px}.hero-spread-visual{min-height:52svh}.hero-logo-mark{width:min(280px,70vw)}.hero-spread .hero-title{font-size:clamp(38px,10.8vw,46px)}}
+
+
+
+/* GSAP controls the hero sequence. */
+.hero-logo-stage,.hero-logo-mark,.spread-logo,.spread-photo,.hero-spread .hero-content,.hero-spread>.actions{will-change:transform,opacity}.hero-logo-stage{animation:none!important;opacity:1;visibility:visible}.hero-logo-mark{animation:none!important}.spread-logo,.spread-photo{animation:none!important}.hero-spread .hero-content,.hero-spread>.actions{opacity:0}.hero-ready .hero-spread .hero-content,.hero-ready .hero-spread>.actions{opacity:1}@media (prefers-reduced-motion:reduce){.hero-logo-stage{display:none!important}.spread-logo,.spread-photo,.hero-spread .hero-content,.hero-spread>.actions{opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important}}
+
+
+
+/* Scroll-linked outward hero spread. */
+.hero-spread{min-height:100svh}.hero-spread-visual{pointer-events:none}.spread-logo{background:transparent}.spread-photo{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;width:min(150px,12vw)!important;transform-origin:center center}.spread-photo-a{--r:-10deg}.spread-photo-b{--r:8deg}.spread-photo-c{--r:3deg}.spread-photo-d{--r:-4deg}.spread-photo-e{--r:11deg}.spread-photo-f{--r:-7deg}.spread-photo-g{--r:7deg}.spread-photo-h{--r:-12deg}@media (max-width:900px){.spread-photo{width:min(120px,24vw)!important}.hero-spread-visual{min-height:54svh}}@media (max-width:560px){.spread-photo{width:min(104px,26vw)!important}.hero-spread-visual{min-height:48svh}}
+
 </style>
 </head>
 <body>
 <div class="page">
 <header class="site-header"><div class="header-inner"><a class="brand" href="#top"><svg class="brand-logo" viewBox="0 0 450 150" aria-hidden="true"><g fill="#1a1114"><rect x="12" y="24" width="48" height="48"/><rect x="68" y="24" width="48" height="48"/><rect x="12" y="80" width="48" height="48"/><rect x="168" y="24" width="48" height="48"/><rect x="224" y="24" width="48" height="48"/><rect x="112" y="80" width="48" height="48"/><rect x="224" y="80" width="48" height="48"/><rect x="328" y="24" width="48" height="48"/><rect x="384" y="24" width="48" height="48"/><rect x="328" y="80" width="48" height="48"/><path d="M384 80h48l-48 48z"/></g></svg><span class="brand-text">くるくる</span></a><a class="header-shop" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">SHOPへ</a></div></header>
 <main id="top">
-<section class="hero" aria-labelledby="hero-title"><div class="hero-content reveal"><h1 class="hero-title" id="hero-title">大切な人へ、<br>やさしい流れを<br class="mobile-only">贈る。</h1><p class="hero-copy">空気の流れで静かに回る<br>インテリアギフト「くるくる」。</p><p class="hero-meta"><span>年間2000個限定。2年連続完売。</span><span>新築祝い・開店祝い・結婚祝い・引越し祝い・転職祝いに</span></p></div><div class="visual reveal" aria-label="空気の流れで静かに回るくるくるの室内写真"><img src="wind-flow.gif" alt="風の流れを可視化するくるくるのGIF"></div><div class="actions"><a class="button" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">在庫を確認する</a></div></section>
+<section class="hero hero-spread" aria-labelledby="hero-title">
+  <div class="hero-logo-stage" aria-hidden="true">
+    <img src="kurukuru-logo-original-transparent.png" alt="" class="hero-logo-mark">
+  </div>
+  <div class="hero-content reveal">
+    <p class="eyebrow">Kurukuru interior gift</p>
+    <h1 class="hero-title" id="hero-title">大切な人へ、<br>やさしい流れを<br class="mobile-only">贈る。</h1>
+    <p class="hero-copy">空気の流れで静かに回る<br>インテリアギフト「くるくる」。</p>
+    <p class="hero-meta"><span>年間2000個限定。2年連続完売。</span><span>新築祝い・開店祝い・結婚祝い・引越し祝い・転職祝いに</span></p>
+  </div>
+  <div class="hero-spread-visual reveal" aria-label="くるくるの写真が広がるヒーロービジュアル">
+    <img class="spread-logo" src="kurukuru-logo-original-transparent.png" alt="くるくるロゴ">
+    <figure class="spread-photo spread-photo-a"><img src="S__84107270_0-transparent.png" alt="赤い羽のくるくる"></figure>
+    <figure class="spread-photo spread-photo-b"><img src="S__84107276_0-transparent.png" alt="くるくるの商品写真"></figure>
+    <figure class="spread-photo spread-photo-c"><img src="S__84107272_0-transparent.png" alt="黄色い羽のくるくる"></figure>
+    <figure class="spread-photo spread-photo-d"><img src="kurukuru-color-04-transparent.png" alt="イエローのくるくる"></figure>
+    <figure class="spread-photo spread-photo-e"><img src="kurukuru-color-05-transparent.png" alt="ライトグリーンのくるくる"></figure>
+    <figure class="spread-photo spread-photo-f"><img src="kurukuru-color-06-transparent.png" alt="グリーンのくるくる"></figure>
+    <figure class="spread-photo spread-photo-g"><img src="kurukuru-color-07-transparent.png" alt="ライトブルーのくるくる"></figure>
+    <figure class="spread-photo spread-photo-h"><img src="kurukuru-color-08-transparent.png" alt="ブルーのくるくる"></figure>
+  </div>
+  <div class="actions"><a class="button" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">在庫を確認する</a></div>
+</section>
 
 <section class="section reveal concept-pattern" aria-labelledby="concept-title"><div class="section-body"><h2 class="section-title" id="concept-title">良い流れは、<br>贈ることができる。</h2><p class="lead">くるくるは、目に見えない空気の流れを可視化し、空間にやさしい変化をもたらすインテリアです。</p><p class="body-text">わずかな風で、静かに回る。<br>その動きは、見る人の心をそっと整え、日常に前向きな流れを生み出します。</p></div></section><section class="section reveal" aria-labelledby="story-title"><div class="section-body"><h2 class="section-title" id="story-title">前を向く時間から、<br>生まれたもの。</h2><div class="story-layout"><figure class="story-photo"><img src="assets/image-1a0b4de0b72b.jpg" alt="くるくるの制作に関わった祖母と作者の写真"><figcaption>前を向く時間を、ともに作り続けた記憶。</figcaption></figure><div class="story-text"><p>この「くるくる」は、闘病中の祖母と一緒に制作していました。</p><p>抗がん剤治療の中でも、制作に夢中になる時間は、前を向ける時間でした。</p><p>「2000個のくるくるを届けよう」</p><p>そう決めて、2人で作り続けました。そして、すべての制作と発送を終えた直後、祖母の癌は、奇跡のように姿を消しました。</p><p>だから、くるくるは単なるインテリアではありません。誰かが前を向くきっかけになる。空間と心に、やさしい流れを生む。</p><p>これは何かを治すためのものではなく、前を向ける時間の記憶として大切にしている出来事です。</p><p>そんな想いから生まれたギフトです。</p></div></div></div></section><section class="section reveal" aria-labelledby="reason-title"><div class="section-body"><h2 class="section-title" id="reason-title">意味のある贈り物を。</h2><p class="lead">大切な人への贈り物ほど、何を選べばいいか迷ってしまう。</p><p class="body-text">ありきたりすぎても違う。高すぎても気を使わせる。でも、ちゃんと想いは伝えたい。そんなときに選ばれているのが、“意味のあるギフト”としての「くるくる」です。</p><h3 class="subhead">“センスいいね”と言われる贈り物。</h3><div class="reason-grid"><article class="reason-card"><h3>インテリアとして美しい</h3><p>置くだけで空間の印象が変わります。</p></article><article class="reason-card"><h3>誰に贈っても外しにくい</h3><p>年齢や性別を問わず、暮らしに馴染みます。</p></article><article class="reason-card"><h3>想いが伝わる</h3><p>「いい流れを贈る」という意味があるから、ただのモノではなく、気持ちごと届けられます。</p></article></div></div></section>
 <section class="section reveal scene-section" aria-labelledby="scene-title"><div class="section-body"><h2 class="section-title" id="scene-title">人生の節目に、<br>静かな祝福を。</h2><p class="lead">人生の節目に、いい流れを。</p><ul class="scene-list"><li>新築祝い</li><li>開店祝い</li><li>結婚祝い</li><li>引越し祝い</li><li>転職祝い</li><li>退職祝い</li><li>誕生日</li><li>大切な人への応援ギフト</li></ul></div></section>
@@ -88,9 +125,67 @@
 <section class="section reveal" aria-labelledby="limited-title"><div class="section-body"><h2 class="section-title" id="limited-title">一年に、<br>2000個だけ。</h2><p class="lead">ひとつひとつ手作業で制作しているため、年間2000個限定での販売です。</p><p class="body-text">ありがたいことに、2年連続で完売しています。大切な方への贈り物をお考えの方は、お早めに在庫をご確認ください。</p><div class="limit-mark" aria-hidden="true">2000<span>per year</span></div><div class="actions"><a class="button secondary" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">公式ショップで見る</a></div></div></section>
 <section class="closing reveal" aria-labelledby="closing-title"><h2 class="section-title" id="closing-title">大切な人へ、<br>やさしい流れを贈る。</h2><p class="body-text">「くるくる」という小さな選択が、誰かの空間に、そして日常に、そっと前向きな変化をもたらします。</p><p class="lead">良い流れは、<br>贈ることができる。</p><div class="actions"><a class="button" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">ギフトとして選ぶ</a></div></section>
 </main><footer class="footer"><p>Kurukuru / Interior gift. Official shop links open in a new tab.</p></footer></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
 const targets=document.querySelectorAll('.reveal');
-if('IntersectionObserver'in window){const observer=new IntersectionObserver((entries)=>{entries.forEach((entry)=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}})},{threshold:.18});targets.forEach((target)=>observer.observe(target))}else{targets.forEach((target)=>target.classList.add('is-visible'))}
+if('IntersectionObserver'in window){
+  const observer=new IntersectionObserver((entries)=>{entries.forEach((entry)=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}})},{threshold:.18});
+  targets.forEach((target)=>observer.observe(target));
+}else{
+  targets.forEach((target)=>target.classList.add('is-visible'));
+}
+
+window.addEventListener('load',()=>{
+  if(!window.gsap || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.documentElement.classList.add('hero-ready');
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+  document.documentElement.classList.add('hero-ready');
+
+  const photos = gsap.utils.toArray('.spread-photo');
+  const endStates = [
+    {x:'-74vw', y:'-48vh', rotation:-28, scale:.58},
+    {x:'72vw', y:'-38vh', rotation:24, scale:.56},
+    {x:'-18vw', y:'70vh', rotation:15, scale:.54},
+    {x:'-62vw', y:'8vh', rotation:-20, scale:.5},
+    {x:'36vw', y:'-64vh', rotation:30, scale:.5},
+    {x:'68vw', y:'42vh', rotation:-18, scale:.5},
+    {x:'-70vw', y:'44vh', rotation:20, scale:.48},
+    {x:'22vw', y:'68vh', rotation:-24, scale:.48}
+  ];
+
+  gsap.set('.hero-logo-stage',{autoAlpha:0,pointerEvents:'none'});
+  gsap.set('.hero-logo-mark',{autoAlpha:0});
+  gsap.set('.spread-logo',{autoAlpha:1,scale:1,xPercent:-50,yPercent:-50});
+  gsap.set(photos,{autoAlpha:0,scale:.18,xPercent:-50,yPercent:-50,rotation:0,filter:'blur(8px)'});
+  gsap.set('.hero-spread .hero-content, .hero-spread > .actions',{autoAlpha:0,y:24});
+
+  const intro = gsap.timeline({defaults:{ease:'power3.out'}});
+  intro.to('.spread-logo',{scale:.82,duration:.7})
+    .to(photos,{autoAlpha:1,scale:.34,filter:'blur(0px)',duration:.75,stagger:{each:.035,from:'center'}},'<+.12')
+    .to('.hero-spread .hero-content, .hero-spread > .actions',{autoAlpha:1,y:0,duration:.75,stagger:.08},'-=.25');
+
+  const spread = gsap.timeline({
+    defaults:{ease:'none'},
+    scrollTrigger:{
+      trigger:'.hero-spread',
+      start:'top top',
+      end:'+=130%',
+      scrub:true,
+      pin:true,
+      anticipatePin:1
+    }
+  });
+
+  spread.to('.spread-logo',{scale:.42,autoAlpha:0,duration:.45},0);
+  photos.forEach((el,i)=>{
+    spread.to(el,{...endStates[i], xPercent:0, yPercent:0, autoAlpha:0, filter:'blur(2px)', duration:1},0);
+  });
+  spread.to('.hero-spread .hero-content, .hero-spread > .actions',{y:-30,autoAlpha:.18,duration:.65},.1);
+});
 </script>
 </body>
 </html>
