@@ -140,6 +140,35 @@
   .spread-photo{width:clamp(190px,82vw,340px)!important;}
 }
 
+
+
+/* Tighten the first hero copy against the animated visual. */
+.hero-spread .hero-content{
+  padding-top:clamp(0px,2.4svh,28px)!important;
+}
+@media (max-width:900px){
+  .hero-spread{
+    gap:8px!important;
+  }
+  .hero-spread-visual{
+    height:44svh!important;
+    min-height:310px!important;
+    margin-top:0!important;
+  }
+  .hero-spread .hero-content{
+    margin-top:-18px!important;
+  }
+}
+@media (max-width:560px){
+  .hero-spread-visual{
+    height:42svh!important;
+    min-height:285px!important;
+  }
+  .hero-spread .hero-content{
+    margin-top:-12px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -226,7 +255,7 @@ window.addEventListener('load',()=>{
 
   const hasGsap=!!window.gsap;
   const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-  const ease=(t)=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  const ease=(t)=>1-Math.pow(1-t,2.4);
   let states=[];
 
   function buildStates(){
@@ -273,7 +302,7 @@ window.addEventListener('load',()=>{
   function progress(){
     const rect=hero.getBoundingClientRect();
     const total=Math.max(1,hero.offsetHeight-window.innerHeight);
-    return clamp(-rect.top/total,0,1);
+    return clamp((-rect.top/total)*1.22,0,1);
   }
   function render(){
     ticking=false;
@@ -288,7 +317,7 @@ window.addEventListener('load',()=>{
     if(spreadLogo){
       setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1-.72*p,autoAlpha:clamp(1-p*1.35,0,1)});
     }
-    content.forEach((el)=>setStyles(el,{autoAlpha:clamp(1-p*.95,.12,1),y:-42*p}));
+    const mob=window.innerWidth<=900;content.forEach((el)=>setStyles(el,{autoAlpha:mob?1:clamp(1-p*.95,.12,1),y:mob?0:-42*p}));
   }
   function requestRender(){
     if(ticking)return;
