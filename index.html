@@ -551,7 +551,7 @@ main > section,
 .floating-kurukuru-field{
   position:fixed;
   inset:0;
-  z-index:1;
+  z-index:-1;
   pointer-events:none;
   overflow:hidden;
   opacity:0;
@@ -2088,7 +2088,22 @@ section[aria-labelledby="reason-title"] .reason-card:nth-child(even){
 }
 
 </style>
-</head>
+
+<style>
+/* 羽アニメーションを全コンテンツの背面に固定 */
+.floating-kurukuru-field{
+  z-index:-1!important;
+}
+.page{
+  position:relative;
+  z-index:0;
+}
+.page>*{
+  position:relative;
+  z-index:1;
+}
+</style>
+<style>.crayon-underline::before,.crayon-underline::after{display:none!important;content:none!important;}</style></head>
 <body>
 <div class="page">
 <header class="site-header"><div class="header-inner"><a class="brand" href="#top"><svg class="brand-logo" viewBox="0 0 450 150" aria-hidden="true"><g fill="#1a1114"><rect x="12" y="24" width="48" height="48"/><rect x="68" y="24" width="48" height="48"/><rect x="12" y="80" width="48" height="48"/><rect x="168" y="24" width="48" height="48"/><rect x="224" y="24" width="48" height="48"/><rect x="112" y="80" width="48" height="48"/><rect x="224" y="80" width="48" height="48"/><rect x="328" y="24" width="48" height="48"/><rect x="384" y="24" width="48" height="48"/><rect x="328" y="80" width="48" height="48"/><path d="M384 80h48l-48 48z"/></g></svg><span class="brand-text">くるくる</span></a><a class="header-shop" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 22px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;transition:background .2s,border-color .2s">SHOP</a></div></header>
@@ -2154,7 +2169,7 @@ section[aria-labelledby="reason-title"] .reason-card:nth-child(even){
     <figure class="reason-hero-image">
       <img src="ChatGPT Image 2026年5月16日 01_19_17.png" alt="黄色のくるくるが室内で静かに佇む様子">
     </figure>
-    <h3 class="subhead crayon-underline">"センスいいね"と言われる贈り物。</h3>
+    <h3 class="subhead">"センスいいね"と言われる贈り物。</h3>
     <div class="reason-grid">
       <article class="reason-card"><h3>インテリアとして美しい</h3><p>置くだけで、空間の印象が静かに変わります。</p></article>
       <article class="reason-card"><h3>誰に贈っても外しにくい</h3><p>年齢や性別を問わず、日常の暮らしに馴染みます。</p></article>
