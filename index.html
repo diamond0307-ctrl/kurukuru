@@ -554,7 +554,7 @@ main > section,
   z-index:-1;
   pointer-events:none;
   overflow:hidden;
-  opacity:.98;
+  opacity:0;
   transition:none;
 }
 .floating-kurukuru-field.is-active{
@@ -603,7 +603,7 @@ main,footer{
 }
 .floating-kurukuru-field{
   z-index:0!important;
-  opacity:.98!important;
+  opacity:0!important;
 }
 .floating-kurukuru-field.is-active{
   opacity:.98!important;
@@ -2449,7 +2449,11 @@ window.addEventListener('load',()=>{
     const maxScroll=Math.max(1,document.documentElement.scrollHeight-vh);
     const scroll=window.scrollY || window.pageYOffset || 0;
     const progress=clamp(scroll/maxScroll,0,1);
-    field.classList.add('is-active');
+    const hero=document.querySelector('.hero-spread');
+    const start=hero ? hero.offsetTop + hero.offsetHeight*.18 : vh*.35;
+    const active=scroll>start;
+    field.classList.toggle('is-active',active);
+    if(!active) return;
     const time=performance.now()/1000;
     pieces.forEach((p,i)=>{
       const baseX=p.xSeed*vw;
