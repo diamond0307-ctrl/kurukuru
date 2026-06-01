@@ -564,7 +564,7 @@ main > section,
   position:absolute;
   left:0;
   top:0;
-  width:clamp(72px,10vw,150px);
+  width:clamp(58px,9vw,132px);
   aspect-ratio:1;
   opacity:.18;
   transform-origin:center center;
@@ -586,7 +586,7 @@ main,footer{
 }
 @media (max-width:700px){
   .floating-kurukuru-piece{
-    width:clamp(54px,18vw,96px);
+    width:clamp(46px,15vw,82px);
     opacity:.14;
   }
 }
@@ -594,6 +594,35 @@ main,footer{
   .floating-kurukuru-field{
     display:none!important;
   }
+}
+
+  
+/* Floating kurukuru depth fix: keep behind all content and vary scale. */
+.page{
+  isolation:isolate;
+}
+.floating-kurukuru-field{
+  z-index:0!important;
+  opacity:0;
+}
+.floating-kurukuru-field.is-active{
+  opacity:.88!important;
+}
+main,footer,.site-header{
+  position:relative;
+}
+main,footer{
+  z-index:2!important;
+}
+.site-header{
+  z-index:20!important;
+}
+section,.section,.closing,.footer,.product-figure,.voice,.reason-card,.story-photo,.reason-hero-image,.motion-gif-section{
+  position:relative;
+  z-index:2;
+}
+.floating-kurukuru-piece{
+  opacity:.2;
 }
 
   </style>
@@ -2347,7 +2376,7 @@ window.addEventListener('load',()=>{
       ampX:26+(i%5)*18,
       ampY:20+(i%6)*15,
       rot:(i%2?-1:1)*(18+(i%9)*8),
-      scale:.72+(i%5)*.08
+      scale:(i%9===0?1.48:i%7===0?1.18:.54+(i%6)*.13)
     };
   });
   document.body.appendChild(field);
@@ -2382,7 +2411,7 @@ window.addEventListener('load',()=>{
       const x=baseX+driftX+scrollOrbit;
       const y=baseY+driftY+Math.cos(progress*Math.PI*2+p.phase)*26;
       const rotation=Math.sin(time*(p.speed*.8)+progress*8+p.phase)*p.rot + progress*160*(i%2?-1:1);
-      const opacity=(window.innerWidth<=700?.11:.16)+(Math.sin(time*.7+p.phase)*.035);
+      const opacity=(window.innerWidth<=700?.10:.17)+(p.scale>1.2?.06:0)+(Math.sin(time*.7+p.phase)*.035);
       p.el.style.opacity=opacity.toFixed(3);
       p.el.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0) translate(-50%,-50%) rotate('+rotation.toFixed(2)+'deg) scale('+p.scale.toFixed(2)+')';
     });
