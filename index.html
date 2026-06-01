@@ -535,6 +535,67 @@ main > section,
   }
 }
 
+  
+/* Add breathing room above the product color heading section. */
+.product-panel{
+  padding-top:clamp(52px,8vw,104px)!important;
+}
+@media (max-width:700px){
+  .product-panel{
+    padding-top:72px!important;
+  }
+}
+
+  
+/* Page-long floating kurukuru layer. */
+.floating-kurukuru-field{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:0;
+  transition:opacity 420ms ease;
+}
+.floating-kurukuru-field.is-active{
+  opacity:1;
+}
+.floating-kurukuru-piece{
+  position:absolute;
+  left:0;
+  top:0;
+  width:clamp(72px,10vw,150px);
+  aspect-ratio:1;
+  opacity:.18;
+  transform-origin:center center;
+  will-change:transform,opacity;
+  filter:saturate(1.04) contrast(1.02);
+}
+.floating-kurukuru-piece img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+.site-header{
+  z-index:20;
+}
+main,footer{
+  position:relative;
+  z-index:2;
+}
+@media (max-width:700px){
+  .floating-kurukuru-piece{
+    width:clamp(54px,18vw,96px);
+    opacity:.14;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .floating-kurukuru-field{
+    display:none!important;
+  }
+}
+
   </style>
 <style>
 /* Hero redesign: logo-only → colorful spread on scroll */
@@ -2258,6 +2319,92 @@ window.addEventListener('load',()=>{
   toggleHeader();
   window.addEventListener('scroll',toggleHeader,{passive:true});
   window.addEventListener('resize',toggleHeader,{passive:true});
+})();
+</script>
+
+<script>
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const sourceImages=Array.from(document.querySelectorAll('.spread-photo img')).slice(0,18);
+  if(!sourceImages.length) return;
+  const field=document.createElement('div');
+  field.className='floating-kurukuru-field';
+  field.setAttribute('aria-hidden','true');
+  const pieces=sourceImages.map((img,i)=>{
+    const piece=document.createElement('div');
+    piece.className='floating-kurukuru-piece';
+    const clone=document.createElement('img');
+    clone.src=img.currentSrc || img.src;
+    clone.alt='';
+    piece.appendChild(clone);
+    field.appendChild(piece);
+    return {
+      el:piece,
+      xSeed:(i*73)%100/100,
+      ySeed:(i*47+19)%100/100,
+      phase:i*.82,
+      speed:.18+(i%7)*.035,
+      ampX:26+(i%5)*18,
+      ampY:20+(i%6)*15,
+      rot:(i%2?-1:1)*(18+(i%9)*8),
+      scale:.72+(i%5)*.08
+    };
+  });
+  document.body.appendChild(field);
+
+  let vw=window.innerWidth;
+  let vh=window.innerHeight;
+  let ticking=false;
+  const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+
+  function resize(){
+    vw=window.innerWidth;
+    vh=window.innerHeight;
+  }
+
+  function render(){
+    ticking=false;
+    const maxScroll=Math.max(1,document.documentElement.scrollHeight-vh);
+    const scroll=window.scrollY || window.pageYOffset || 0;
+    const progress=clamp(scroll/maxScroll,0,1);
+    const hero=document.querySelector('.hero-spread');
+    const start=hero ? hero.offsetTop + hero.offsetHeight*.18 : vh*.35;
+    const active=scroll>start;
+    field.classList.toggle('is-active',active);
+    if(!active) return;
+    const time=performance.now()/1000;
+    pieces.forEach((p,i)=>{
+      const baseX=p.xSeed*vw;
+      const baseY=p.ySeed*vh;
+      const driftX=Math.sin(time*p.speed+p.phase+progress*7.5)*p.ampX;
+      const driftY=Math.cos(time*(p.speed*.9)+p.phase*1.4+progress*9)*p.ampY;
+      const scrollOrbit=Math.sin(progress*Math.PI*2+p.phase)*38;
+      const x=baseX+driftX+scrollOrbit;
+      const y=baseY+driftY+Math.cos(progress*Math.PI*2+p.phase)*26;
+      const rotation=Math.sin(time*(p.speed*.8)+progress*8+p.phase)*p.rot + progress*160*(i%2?-1:1);
+      const opacity=(window.innerWidth<=700?.11:.16)+(Math.sin(time*.7+p.phase)*.035);
+      p.el.style.opacity=opacity.toFixed(3);
+      p.el.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0) translate(-50%,-50%) rotate('+rotation.toFixed(2)+'deg) scale('+p.scale.toFixed(2)+')';
+    });
+  }
+
+  function request(){
+    if(ticking) return;
+    ticking=true;
+    requestAnimationFrame(render);
+  }
+
+  resize();
+  render();
+  let loopId=0;
+  function loop(){
+    request();
+    loopId=requestAnimationFrame(loop);
+  }
+  loop();
+  window.addEventListener('scroll',request,{passive:true});
+  window.addEventListener('resize',()=>{resize();request();},{passive:true});
+  window.addEventListener('pagehide',()=>cancelAnimationFrame(loopId));
 })();
 </script>
 </body>
