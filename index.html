@@ -2160,6 +2160,44 @@ section[aria-labelledby="feature-title"]{
   }
 }
 </style>
+<style>
+/* Fixed center hero logo sequence. */
+.hero-logo-stage {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 80 !important;
+  width: 100vw !important;
+  height: 100svh !important;
+  display: grid !important;
+  place-items: center !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+.hero-logo-mark {
+  width: min(58vw, 300px) !important;
+  max-width: 300px !important;
+  transform: none !important;
+}
+
+.spread-logo {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.spread-photo {
+  z-index: 40 !important;
+}
+
+@media (max-width: 560px) {
+  .hero-logo-mark {
+    width: min(52vw, 240px) !important;
+    max-width: 240px !important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="page">
@@ -2336,9 +2374,9 @@ window.addEventListener('load',()=>{
   }
 
   buildStates();
-  setStyles(document.querySelector('.hero-logo-stage'),{autoAlpha:0});
+  setStyles(document.querySelector('.hero-logo-stage'),{autoAlpha:1,x:0,y:0,scale:1});
   photos.forEach((el,i)=>setStyles(el,{xPercent:-50,yPercent:-50,x:0,y:0,scale:states[i].startScale,rotation:0,autoAlpha:0,filter:'blur(0px)'}));
-  if(spreadLogo)setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1,autoAlpha:1});
+  if(spreadLogo)setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1,autoAlpha:0});
   if(behindCopy)setStyles(behindCopy,{autoAlpha:0});
   if(behindCopy){behindCopy.style.clipPath='inset(0 0 0 0)';behindCopy.style.transform='none';behindCopy.style.filter='blur(10px)';}
   if(windLayer){windLayer.style.opacity='0';windLayer.style.transform='translateX(-36vw)';}
@@ -2364,7 +2402,7 @@ window.addEventListener('load',()=>{
     });
     if(spreadLogo){
       const logoFade=clamp(1-p*1.05,0,1);
-      setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1-.72*p,autoAlpha:logoFade*.62});
+      setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1,autoAlpha:0});
     }
     const copyReveal=clamp((raw-.22)/(window.innerWidth<=900?.48:.40),0,1);
     if(behindCopy){
@@ -2391,7 +2429,7 @@ window.addEventListener('load',()=>{
 
   if(hasGsap){
     gsap.fromTo(photos,{autoAlpha:0,scale:.05,filter:'blur(0px)'},{autoAlpha:0,scale:(i)=>states[i].startScale,filter:'blur(0px)',duration:.01,ease:'none'});
-    if(spreadLogo)gsap.fromTo(spreadLogo,{scale:.82,autoAlpha:0},{scale:1,autoAlpha:1,duration:.55,ease:'power3.out'});
+    if(spreadLogo)gsap.set(spreadLogo,{autoAlpha:0,scale:1});
   }
   render();
   window.addEventListener('scroll',requestRender,{passive:true});
