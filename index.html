@@ -2171,8 +2171,6 @@ section[aria-labelledby="feature-title"]{
   display: grid !important;
   place-items: center !important;
   pointer-events: none !important;
-  opacity: 1 !important;
-  visibility: visible !important;
   transform: none !important;
 }
 
@@ -2322,6 +2320,7 @@ window.addEventListener('load',()=>{
   const hero=document.querySelector('.hero-spread');
   const photos=Array.from(document.querySelectorAll('.spread-photo'));
   const spreadLogo=document.querySelector('.spread-logo');
+  const heroLogoStage=document.querySelector('.hero-logo-stage');
   const behindCopy=document.querySelector('.hero-behind-copy');
   const windLayer=document.querySelector('.hero-wind-layer');
   const content=document.querySelectorAll('.hero-spread .hero-content, .hero-spread > .actions');
@@ -2374,7 +2373,7 @@ window.addEventListener('load',()=>{
   }
 
   buildStates();
-  setStyles(document.querySelector('.hero-logo-stage'),{autoAlpha:1,x:0,y:0,scale:1});
+  if(heroLogoStage)setStyles(heroLogoStage,{autoAlpha:1,x:0,y:0,scale:1});
   photos.forEach((el,i)=>setStyles(el,{xPercent:-50,yPercent:-50,x:0,y:0,scale:states[i].startScale,rotation:0,autoAlpha:0,filter:'blur(0px)'}));
   if(spreadLogo)setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1,autoAlpha:0});
   if(behindCopy)setStyles(behindCopy,{autoAlpha:0});
@@ -2412,6 +2411,9 @@ window.addEventListener('load',()=>{
       behindCopy.style.clipPath='inset(0 0 0 0)';
       behindCopy.style.transform='none';
       behindCopy.style.filter='blur('+blur+'px)';
+      if(heroLogoStage)setStyles(heroLogoStage,{autoAlpha:clamp(1-breeze*1.15,0,1),x:0,y:0,scale:1});
+    } else if(heroLogoStage){
+      setStyles(heroLogoStage,{autoAlpha:1,x:0,y:0,scale:1});
     }
     if(windLayer){
       const wind=clamp((raw-.18)/(window.innerWidth<=900?.48:.38),0,1);
