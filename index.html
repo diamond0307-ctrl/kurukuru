@@ -2263,6 +2263,58 @@ section[aria-labelledby="feature-title"]{
   }
 }
 </style>
+<style>
+/* Remove faint guide-like lines crossing the opening logo. */
+.hero-wind-layer,
+.hero-wind-layer::before,
+.hero-wind-layer::after{
+  display:none!important;
+  opacity:0!important;
+  background:none!important;
+  box-shadow:none!important;
+  content:none!important;
+}
+.hero-logo-stage{
+  z-index:70!important;
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+.hero-logo-mark{
+  display:block!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+</style>
+<style>
+/* Customer voice: keep the white reading surface, remove visible frames and dividers. */
+section[aria-labelledby="voice-title"] .voices{
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+section[aria-labelledby="voice-title"] .voice{
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:rgba(255,255,255,.94)!important;
+}
+section[aria-labelledby="voice-title"] .voice + .voice{
+  border-top:0!important;
+}
+section[aria-labelledby="voice-title"] .voice::before,
+section[aria-labelledby="voice-title"] .voice::after,
+section[aria-labelledby="voice-title"] .voices::before,
+section[aria-labelledby="voice-title"] .voices::after{
+  display:none!important;
+  content:none!important;
+}
+</style>
 </head>
 <body>
 <div class="page">
