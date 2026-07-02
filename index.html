@@ -763,7 +763,7 @@ section,.section,.closing,.footer,.product-figure,.voice,.reason-card,.story-pho
 .hero-spread{
   position:relative!important;
   z-index:20!important;
-  min-height:260svh!important;
+  min-height:360svh!important; /* taller sticky range → slower, airier spread */
   margin-bottom:0!important;
   padding:0!important;
   background:#fff!important;
@@ -843,7 +843,7 @@ section,.section,.closing,.footer,.product-figure,.voice,.reason-card,.story-pho
 }
 @media(max-width:900px){
   .hero-spread{
-    min-height:248svh!important;
+    min-height:460svh!important;
   }
   .hero-behind-copy{
     padding:74px 28px 44px!important;
@@ -861,7 +861,7 @@ section,.section,.closing,.footer,.product-figure,.voice,.reason-card,.story-pho
 }
 @media(max-width:560px){
   .hero-spread{
-    min-height:240svh!important;
+    min-height:470svh!important;
   }
   .hero-behind-copy{
     padding:66px 24px 38px!important;
@@ -2447,7 +2447,9 @@ window.addEventListener('load',()=>{
 
   const hasGsap=!!window.gsap;
   const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-  const ease=(t)=>1-Math.pow(1-t,2.4);
+  // ③ smootherstep: almost no motion for the first ~25%, a gentle spread
+  //    through the middle, and a soft lingering stop at the end (余韻).
+  const ease=(t)=>t*t*t*(t*(t*6-15)+10);
   let states=[];
 
   function buildStates(){
@@ -2495,29 +2497,47 @@ window.addEventListener('load',()=>{
   if(windLayer){windLayer.style.opacity='0';windLayer.style.transform='translateX(-36vw)';}
   content.forEach((el)=>setStyles(el,{autoAlpha:1,y:0}));
 
-  let ticking=false;
+  let rafId=null;
+  let targetRaw=0;        // where the scroll currently points (0→1)
+  let leadP=0;            // smoothed progress driving the logo/copy — leads
+  let photoP=0;           // smoothed progress driving the photos — follows
+  // ② scrub-like inertia: the render eases toward the scroll target instead of
+  //    snapping to it, so the motion trails the scroll with a natural lag.
+  const LEAD_EASE=0.06;   // lower = heavier lag (feels like GSAP scrub:2)
+  // ⑤ the photos chase the logo, arriving ~0.15–0.25s after it.
+  const PHOTO_FOLLOW=0.10;
+  const SETTLE=0.0005;    // stop the rAF loop once movement is imperceptible
+
   function progress(){
     const rect=hero.getBoundingClientRect();
-    const mob=window.innerWidth<=900;
-    const total=Math.max(window.innerHeight*(mob?1.05:.72),(hero.offsetHeight-window.innerHeight)*(mob?1.08:.72));
+    // ① Play the spread over most of the (now much taller) sticky range and
+    //    keep a calm tail at the end, so the animation completes far more
+    //    slowly per pixel scrolled — ~1.9–2× the previous distance.
+    const avail=Math.max(1,hero.offsetHeight-window.innerHeight);
+    const total=avail*0.85;
     return clamp(-rect.top/total,0,1);
   }
-  function render(){
-    ticking=false;
-    const raw=progress();
-    hero.classList.toggle('is-photo-locked',raw<.025);
-    const p=ease(raw);
+  function draw(){
+    const lead=leadP;     // logo / copy / wind — a touch ahead
+    const photo=photoP;   // photos — a touch behind
+    hero.classList.toggle('is-photo-locked',lead<.025);
+    const p=ease(photo);
     const fadeOut=clamp((p-.72)/.18,0,1);
+    // ⑥ Longer, softer fade-in so photos surface out of the air rather than pop.
+    let fadeIn=clamp(photo/.5,0,1);
+    fadeIn=fadeIn*fadeIn*(3-2*fadeIn);
+    const enterBlur=(1-fadeIn)*4;
     photos.forEach((el,i)=>{
       const state=states[i];
+      // ④ Same target positions/scales as before — only the pacing changed.
       const scale=state.startScale+(state.endScale-state.startScale)*p;
-      setStyles(el,{xPercent:-50,yPercent:-50,x:state.x*p,y:state.y*p,scale,rotation:state.rotation*p,autoAlpha:clamp(p*4,0,1)*(1-fadeOut),filter:fadeOut>.55?'blur(2px)':'blur(0px)'});
+      const blurPx=Math.max(enterBlur,fadeOut>.55?2:0);
+      setStyles(el,{xPercent:-50,yPercent:-50,x:state.x*p,y:state.y*p,scale,rotation:state.rotation*p,autoAlpha:fadeIn*(1-fadeOut),filter:'blur('+blurPx.toFixed(2)+'px)'});
     });
     if(spreadLogo){
-      const logoFade=clamp(1-p*1.05,0,1);
       setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1,autoAlpha:0});
     }
-    const copyReveal=clamp((raw-.22)/(window.innerWidth<=900?.48:.40),0,1);
+    const copyReveal=clamp((lead-.22)/(window.innerWidth<=900?.48:.40),0,1);
     if(behindCopy){
       const breeze=copyReveal<.5 ? 2*copyReveal*copyReveal : 1-Math.pow(-2*copyReveal+2,2)/2;
       const blur=(1-breeze)*10;
@@ -2530,24 +2550,36 @@ window.addEventListener('load',()=>{
       setStyles(heroLogoStage,{autoAlpha:1,x:0,y:0,scale:1});
     }
     if(windLayer){
-      const wind=clamp((raw-.18)/(window.innerWidth<=900?.48:.38),0,1);
-      const windFade=1-clamp((raw-.62)/.22,0,1);
+      const wind=clamp((lead-.18)/(window.innerWidth<=900?.48:.38),0,1);
+      const windFade=1-clamp((lead-.62)/.22,0,1);
       windLayer.style.opacity=(Math.sin(wind*Math.PI)*.72*windFade).toFixed(3);
       windLayer.style.transform='translateX('+(-36+wind*92)+'vw)';
     }
     content.forEach((el)=>setStyles(el,{autoAlpha:0,y:0}));
   }
+  function tick(){
+    leadP+=(targetRaw-leadP)*LEAD_EASE;      // ② inertia toward the scroll target
+    photoP+=(leadP-photoP)*PHOTO_FOLLOW;     // ⑤ photos trail the logo
+    draw();
+    if(Math.abs(targetRaw-leadP)>SETTLE || Math.abs(leadP-photoP)>SETTLE){
+      rafId=requestAnimationFrame(tick);
+    }else{
+      leadP=photoP=targetRaw;
+      draw();
+      rafId=null;
+    }
+  }
   function requestRender(){
-    if(ticking)return;
-    ticking=true;
-    requestAnimationFrame(render);
+    targetRaw=progress();
+    if(rafId==null)rafId=requestAnimationFrame(tick);
   }
 
   if(hasGsap){
     gsap.fromTo(photos,{autoAlpha:0,scale:.05,filter:'blur(0px)'},{autoAlpha:0,scale:(i)=>states[i].startScale,filter:'blur(0px)',duration:.01,ease:'none'});
     if(spreadLogo)gsap.set(spreadLogo,{autoAlpha:0,scale:1});
   }
-  render();
+  targetRaw=leadP=photoP=progress();
+  draw();
   window.addEventListener('scroll',requestRender,{passive:true});
   window.addEventListener('resize',()=>{buildStates();requestRender();},{passive:true});
 });
