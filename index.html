@@ -1770,6 +1770,51 @@ section[aria-labelledby="feature-title"]{
     flex-basis:min(214px,55vw)!important;
   }
 }
+
+/* 「見えない風に、色を。」14色カードの連続オートスライド */
+section[aria-labelledby="reason-title"] .product-panel{
+  min-width:0;
+  overflow:hidden;
+}
+section[aria-labelledby="reason-title"] .product-gallery{
+  display:flex;
+  width:max-content;
+  max-width:none;
+  gap:12px!important;
+  margin:0;
+  padding:4px 0 16px;
+  overflow:visible;
+  scroll-snap-type:none;
+  scrollbar-width:none;
+  transform:translate3d(0,0,0);
+}
+section[aria-labelledby="reason-title"] .product-gallery::-webkit-scrollbar{
+  display:none;
+}
+section[aria-labelledby="reason-title"] .product-gallery.is-marquee-ready{
+  animation:color-card-marquee 42s linear infinite;
+  will-change:transform;
+}
+section[aria-labelledby="reason-title"] .product-figure{
+  flex:0 0 min(214px,55vw)!important;
+  scroll-snap-align:none;
+}
+@keyframes color-card-marquee{
+  to{
+    transform:translate3d(calc(-50% - 6px),0,0);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  section[aria-labelledby="reason-title"] .product-gallery{
+    width:100%;
+    overflow-x:auto;
+    overscroll-behavior-inline:contain;
+  }
+  section[aria-labelledby="reason-title"] .product-gallery.is-marquee-ready{
+    animation:none;
+    will-change:auto;
+  }
+}
 </style>
 
 <style>
@@ -2257,6 +2302,7 @@ window.addEventListener('load',()=>{
     clone.querySelectorAll('img').forEach((img)=>img.setAttribute('alt',''));
     gallery.appendChild(clone);
   });
+  gallery.classList.add('is-marquee-ready');
 })();
 </script>
 
