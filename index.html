@@ -2518,6 +2518,20 @@ window.addEventListener('load',()=>{
   const windLayer=document.querySelector('.hero-wind-layer');
   const content=document.querySelectorAll('.hero-spread .hero-content, .hero-spread > .actions');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(hero && heroVisual && window.innerWidth<=900){
+    // Freeze the opening stage at its first rendered position. Mobile Safari
+    // changes the viewport height while collapsing its address bar; keeping
+    // this box in pixels prevents the logo from drifting during that resize.
+    const heroRect=hero.getBoundingClientRect();
+    const visualRect=heroVisual.getBoundingClientRect();
+    heroVisual.style.setProperty('position','absolute','important');
+    heroVisual.style.setProperty('left',(visualRect.left-heroRect.left)+'px','important');
+    heroVisual.style.setProperty('top',(visualRect.top-heroRect.top)+'px','important');
+    heroVisual.style.setProperty('width',visualRect.width+'px','important');
+    heroVisual.style.setProperty('height',visualRect.height+'px','important');
+    heroVisual.style.setProperty('min-height',visualRect.height+'px','important');
+    heroVisual.style.setProperty('max-height',visualRect.height+'px','important');
+  }
   if(heroLogoStage && heroVisual && heroLogoStage.parentElement!==heroVisual){
     heroVisual.prepend(heroLogoStage);
   }
