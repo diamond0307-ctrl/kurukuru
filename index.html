@@ -2510,6 +2510,7 @@ if('IntersectionObserver'in window){
 })();
 window.addEventListener('load',()=>{
   const hero=document.querySelector('.hero-spread');
+  const heroVisual=document.querySelector('.hero-spread-visual');
   const photos=Array.from(document.querySelectorAll('.spread-photo'));
   const spreadLogo=document.querySelector('.spread-logo');
   const heroLogoStage=document.querySelector('.hero-logo-stage');
@@ -2517,6 +2518,9 @@ window.addEventListener('load',()=>{
   const windLayer=document.querySelector('.hero-wind-layer');
   const content=document.querySelectorAll('.hero-spread .hero-content, .hero-spread > .actions');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(heroLogoStage && heroVisual && heroLogoStage.parentElement!==heroVisual){
+    heroVisual.prepend(heroLogoStage);
+  }
   document.documentElement.classList.add('hero-ready');
   if(!hero || !photos.length || reduce){
     content.forEach((el)=>{el.style.opacity='1';el.style.transform='none'});
@@ -2530,7 +2534,19 @@ window.addEventListener('load',()=>{
   const ease=(t)=>t*t*t*(t*(t*6-15)+10);
   let states=[];
 
+  function syncLogoStage(){
+    if(!heroLogoStage || !heroVisual) return;
+    // The logo now shares the exact same positioning context as the photos.
+    heroLogoStage.style.setProperty('position','absolute','important');
+    heroLogoStage.style.setProperty('inset','0','important');
+    heroLogoStage.style.setProperty('left','0','important');
+    heroLogoStage.style.setProperty('top','0','important');
+    heroLogoStage.style.setProperty('width','100%','important');
+    heroLogoStage.style.setProperty('height','100%','important');
+  }
+
   function buildStates(){
+    syncLogoStage();
     const vw=window.innerWidth;
     const vh=window.innerHeight;
     const base=Math.max(vw,vh);
@@ -2567,6 +2583,11 @@ window.addEventListener('load',()=>{
   }
 
   buildStates();
+  requestAnimationFrame(()=>requestAnimationFrame(syncLogoStage));
+  if('ResizeObserver' in window){
+    const logoStageObserver=new ResizeObserver(syncLogoStage);
+    logoStageObserver.observe(heroVisual);
+  }
   if(heroLogoStage)setStyles(heroLogoStage,{autoAlpha:1,x:0,y:0,scale:1});
   photos.forEach((el,i)=>setStyles(el,{xPercent:-50,yPercent:-50,x:0,y:0,scale:states[i].startScale,rotation:0,autoAlpha:0,filter:'blur(0px)'}));
   if(spreadLogo)setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1,autoAlpha:0});
@@ -2615,7 +2636,8 @@ window.addEventListener('load',()=>{
     if(spreadLogo){
       setStyles(spreadLogo,{xPercent:-50,yPercent:-50,x:0,y:0,scale:1,autoAlpha:0});
     }
-    const copyReveal=clamp((lead-.22)/(window.innerWidth<=900?.48:.40),0,1);
+    // Sequence: logo first, kurukuru spreads from behind it, then the message.
+    const copyReveal=clamp((lead-.68)/(window.innerWidth<=900?.26:.22),0,1);
     if(behindCopy){
       const breeze=copyReveal<.5 ? 2*copyReveal*copyReveal : 1-Math.pow(-2*copyReveal+2,2)/2;
       const blur=(1-breeze)*10;
