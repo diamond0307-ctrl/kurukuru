@@ -2128,21 +2128,28 @@ window.addEventListener('load',()=>{
   function buildStates(){
     const width=heroVisual.clientWidth || window.innerWidth;
     const height=heroVisual.clientHeight || document.documentElement.clientHeight;
-    const radius=Math.min(width,height);
     const mobile=width<=900;
-    states=photos.map((_,index)=>{
+    const safeMargin=mobile?18:28;
+    states=photos.map((photo,index)=>{
       const ring=index%4;
       const angle=(index/photos.length)*Math.PI*2-Math.PI/2+((index%5)-2)*0.055;
-      const ringDistance=mobile
-        ? [0.23,0.31,0.39,0.47][ring]
-        : [0.28,0.38,0.48,0.58][ring];
-      const distance=radius*ringDistance;
+      const xRatio=mobile?[0.18,0.25,0.32,0.39][ring]:[0.2,0.29,0.38,0.47][ring];
+      const yRatio=mobile?[0.15,0.22,0.29,0.36][ring]:[0.18,0.27,0.36,0.45][ring];
+      const endScale=mobile?[0.52,0.46,0.4,0.35][ring]:[0.48,0.43,0.38,0.33][ring];
+      const displayedWidth=photo.offsetWidth*endScale;
+      const displayedHeight=photo.offsetHeight*endScale;
+      const maxX=Math.max(0,width/2-displayedWidth/2-safeMargin);
+      const maxY=Math.max(0,height/2-displayedHeight/2-safeMargin);
+      const targetX=Math.cos(angle)*width*xRatio;
+      const targetY=Math.sin(angle)*height*yRatio;
       return {
-        x:Math.cos(angle)*distance,
-        y:Math.sin(angle)*distance*0.88,
-        rotation:((index*47)%140)-70,
+        x:clamp(targetX,-maxX,maxX),
+        y:clamp(targetY,-maxY,maxY),
+        maxX,
+        maxY,
+        rotation:(((index*47)%140)-70)*(mobile?.65:1),
         startScale:mobile?[0.18,0.16,0.14,0.12][ring]:[0.14,0.12,0.1,0.09][ring],
-        endScale:mobile?[0.78,0.68,0.58,0.5][ring]:[0.52,0.46,0.4,0.35][ring]
+        endScale
       };
     });
   }
@@ -2150,11 +2157,19 @@ window.addEventListener('load',()=>{
   function setPhoto(el,state,reveal,spread,fade){
     const scale=state.startScale+(state.endScale-state.startScale)*spread;
     const blur=(1-reveal)*4+fade*2;
-    el.style.opacity=String(reveal*(1-fade));
-    el.style.visibility=reveal*(1-fade)>.002?'visible':'hidden';
+    const currentX=state.x*spread;
+    const currentY=state.y*spread;
+    const edgeProgress=Math.max(
+      state.maxX>0?Math.abs(currentX)/state.maxX:0,
+      state.maxY>0?Math.abs(currentY)/state.maxY:0
+    );
+    const edgeFade=1-smooth((edgeProgress-.84)/.16);
+    const opacity=reveal*(1-fade)*edgeFade;
+    el.style.opacity=String(opacity);
+    el.style.visibility=opacity>.002?'visible':'hidden';
     el.style.filter='blur('+blur.toFixed(2)+'px)';
     el.style.transform='translate(-50%, -50%) translate3d('+
-      (state.x*spread).toFixed(2)+'px,'+(state.y*spread).toFixed(2)+'px,0) rotate('+
+      currentX.toFixed(2)+'px,'+currentY.toFixed(2)+'px,0) rotate('+
       (state.rotation*spread).toFixed(2)+'deg) scale('+scale.toFixed(4)+')';
   }
 
@@ -2201,7 +2216,7 @@ window.addEventListener('load',()=>{
   }
 
   let resizeFrame=0;
-  window.addEventListener('resize',()=>{
+  const handleViewportResize=()=>{
     cancelAnimationFrame(resizeFrame);
     resizeFrame=requestAnimationFrame(()=>{
       buildStates();
@@ -2211,11 +2226,18 @@ window.addEventListener('load',()=>{
         draw(currentTime);
       }
     });
-  },{passive:true});
+  };
+  window.addEventListener('resize',handleViewportResize,{passive:true});
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize',handleViewportResize,{passive:true});
+  }
 
   window.addEventListener('pagehide',()=>{
     cancelAnimationFrame(animationFrame);
     cancelAnimationFrame(resizeFrame);
+    if(window.visualViewport){
+      window.visualViewport.removeEventListener('resize',handleViewportResize);
+    }
   },{once:true});
 });
 </script>
