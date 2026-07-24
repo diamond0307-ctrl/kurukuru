@@ -1915,9 +1915,12 @@ section[aria-labelledby="voice-title"] .voices::after{
   z-index: 2;
   width: min(480px, 37vw);
   margin: 0;
+  opacity: 0;
+  visibility: hidden;
   overflow: visible;
   background: transparent;
   box-shadow: none;
+  transform: translate(-50%, -50%) translate3d(0, 0, 0) rotate(0deg) scale(.12);
   transform-origin: center;
   will-change: transform, opacity, filter;
 }
