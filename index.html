@@ -2519,18 +2519,45 @@ window.addEventListener('load',()=>{
   const content=document.querySelectorAll('.hero-spread .hero-content, .hero-spread > .actions');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(hero && heroVisual && window.innerWidth<=900){
-    // Freeze the opening stage at its first rendered position. Mobile Safari
-    // changes the viewport height while collapsing its address bar; keeping
-    // this box in pixels prevents the logo from drifting during that resize.
+    // Lock the whole opening stage to the visible viewport while Safari changes
+    // its browser chrome. Release it back into the page on the first user scroll.
     const heroRect=hero.getBoundingClientRect();
     const visualRect=heroVisual.getBoundingClientRect();
-    heroVisual.style.setProperty('position','absolute','important');
-    heroVisual.style.setProperty('left',(visualRect.left-heroRect.left)+'px','important');
-    heroVisual.style.setProperty('top',(visualRect.top-heroRect.top)+'px','important');
+    const viewport=window.visualViewport;
+    const screenLeft=visualRect.left-(viewport?viewport.offsetLeft:0);
+    const screenTop=visualRect.top-(viewport?viewport.offsetTop:0);
+    let stageReleased=false;
+    heroVisual.style.setProperty('position','fixed','important');
+    heroVisual.style.setProperty('left',visualRect.left+'px','important');
+    heroVisual.style.setProperty('top',visualRect.top+'px','important');
     heroVisual.style.setProperty('width',visualRect.width+'px','important');
     heroVisual.style.setProperty('height',visualRect.height+'px','important');
     heroVisual.style.setProperty('min-height',visualRect.height+'px','important');
     heroVisual.style.setProperty('max-height',visualRect.height+'px','important');
+    const holdStage=()=>{
+      if(stageReleased) return;
+      heroVisual.style.setProperty('left',(screenLeft+(viewport?viewport.offsetLeft:0))+'px','important');
+      heroVisual.style.setProperty('top',(screenTop+(viewport?viewport.offsetTop:0))+'px','important');
+    };
+    const releaseStage=()=>{
+      if(stageReleased || window.scrollY<2) return;
+      stageReleased=true;
+      const current=heroVisual.getBoundingClientRect();
+      const currentHero=hero.getBoundingClientRect();
+      heroVisual.style.setProperty('position','absolute','important');
+      heroVisual.style.setProperty('left',(current.left-currentHero.left)+'px','important');
+      heroVisual.style.setProperty('top',(current.top-currentHero.top)+'px','important');
+      if(viewport){
+        viewport.removeEventListener('resize',holdStage);
+        viewport.removeEventListener('scroll',holdStage);
+      }
+      window.removeEventListener('scroll',releaseStage);
+    };
+    if(viewport){
+      viewport.addEventListener('resize',holdStage,{passive:true});
+      viewport.addEventListener('scroll',holdStage,{passive:true});
+    }
+    window.addEventListener('scroll',releaseStage,{passive:true});
   }
   if(heroLogoStage && heroVisual && heroLogoStage.parentElement!==heroVisual){
     heroVisual.prepend(heroLogoStage);
