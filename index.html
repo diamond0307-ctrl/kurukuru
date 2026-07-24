@@ -2620,10 +2620,12 @@ window.addEventListener('load',()=>{
     const lead=leadP;     // logo / copy / wind — a touch ahead
     const photo=photoP;   // photos — a touch behind
     hero.classList.toggle('is-photo-locked',lead<.025);
-    const p=ease(photo);
+    // First reveal every piece directly behind the stationary logo.
+    // Only after that short hold do the pieces begin to spread outward.
+    const spreadProgress=clamp((photo-.18)/.82,0,1);
+    const p=ease(spreadProgress);
     const fadeOut=clamp((p-.72)/.18,0,1);
-    // ⑥ Longer, softer fade-in so photos surface out of the air rather than pop.
-    let fadeIn=clamp(photo/.5,0,1);
+    let fadeIn=clamp(photo/.18,0,1);
     fadeIn=fadeIn*fadeIn*(3-2*fadeIn);
     const enterBlur=(1-fadeIn)*4;
     photos.forEach((el,i)=>{
