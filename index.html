@@ -2138,6 +2138,9 @@ section[aria-labelledby="voice-title"] .voices::after{
   line-height: 1.45;
   opacity: 0;
   will-change: opacity, transform;
+}
+
+.hero-msg.is-visible {
   animation: heroMsgFade 1.1s cubic-bezier(.2,.7,.3,1) forwards;
 }
 
@@ -2209,7 +2212,7 @@ section[aria-labelledby="voice-title"] .voices::after{
   <div class="hero-message-layer" aria-hidden="true"></div>
 </section>
 <section class="hero-follow-video-section" aria-label="くるくるが空間で回る様子">
-  <video class="hero-follow-video" src="copy_71ABA857-A5D6-45BE-A777-2F3F9CFECCE5.MOV" autoplay muted loop playsinline preload="auto" aria-label="くるくるが空間で回る様子"></video>
+  <video class="hero-follow-video lazy-video" data-src="copy_71ABA857-A5D6-45BE-A777-2F3F9CFECCE5.MOV" muted loop playsinline preload="none" aria-label="くるくるが空間で回る様子"></video>
 </section>
 <section class="hero-shop-cta-section" aria-label="大切な人に贈りたい">
   <a class="button" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">大切な人に贈りたい</a>
@@ -2232,7 +2235,7 @@ section[aria-labelledby="voice-title"] .voices::after{
 <section class="section reveal scene-section" aria-labelledby="scene-title"><div class="section-body"><h2 class="section-title" id="scene-title">人生の節目に、<br>静かな祝福を。</h2><p class="lead">人生の節目に、いい流れを。</p><ul class="scene-list"><li>新築祝い</li><li>開店祝い</li><li>結婚祝い</li><li>引越し祝い</li><li>転職祝い</li><li>退職祝い</li><li>誕生日</li><li>大切な人への応援ギフト</li></ul></div></section>
 <section class="section reveal motion-gif-section" aria-label="くるくるが風で回る様子">
       <div class="motion-gif-wrap">
-        <video class="motion-video" src="copy_3074E706-E3E4-44FD-94A3-7788782E6435.MOV" autoplay muted loop playsinline preload="metadata" aria-label="くるくるがわずかな風で静かに回る様子"></video>
+        <video class="motion-video lazy-video" data-src="copy_3074E706-E3E4-44FD-94A3-7788782E6435.MOV" muted loop playsinline preload="none" aria-label="くるくるがわずかな風で静かに回る様子"></video>
       </div>
     </section>
 
@@ -2414,79 +2417,7 @@ window.addEventListener('load',()=>{
   function initHeroMessages(){
     const messageLayer=document.querySelector('.hero-message-layer');
     if(!messageLayer) return;
-    const clampPercent=(n)=>Math.max(8,Math.min(92,n));
     const MESSAGES=['お疲れ様！','いつもありがとう！','大好きだよ！','頑張ってね！','おめでとう！','元気出してね！','退院おめでとう！','開店おめでとう！','応援してるよ！','引っ越したんだね！','新築おめでとう！','ご定年おめでとうございます！','これからもよろしくね！','新生活楽しんでね','2人の幸せを心から願っています','2人で幸せになってね','お世話になりました','これからも元気でいてね','身体を大切にしてね','独立おめでとう','ずっとそばにいてね！'];
-
-    // Frame every message along two nested rectangles that encircle the
-    // headline: an inner frame just outside its measured box, and an outer
-    // frame near the screen edges. Splitting the 21 items across two
-    // perimeters roughly doubles the usable spacing versus a single ring,
-    // so neighboring messages don't crowd each other.
-    // Each point remembers whether it sits on a horizontal (top/bottom) or
-    // vertical (left/right) edge. On a horizontal edge, neighbors are spaced
-    // along x, so a message wrapping to an extra line doesn't threaten
-    // adjacent items; on a vertical edge, neighbors are spaced along y, where
-    // extra wrapped lines can eat into that gap. Longer messages get routed
-    // to horizontal edges to keep every pairing safe.
-    function pointsOnRect(rect,count){
-      const rw=rect.right-rect.left;
-      const rh=rect.bottom-rect.top;
-      const perimeter=2*(rw+rh);
-      const step=perimeter/count;
-      const pts=[];
-      for(let i=0;i<count;i++){
-        let d=(i+0.5)*step;
-        let x,y,edge;
-        if(d<rw){ x=rect.left+d; y=rect.top; edge='h'; }
-        else if(d<rw+rh){ d-=rw; x=rect.right; y=rect.top+d; edge='v'; }
-        else if(d<rw+rh+rw){ d-=rw+rh; x=rect.right-d; y=rect.bottom; edge='h'; }
-        else { d-=rw+rh+rw; x=rect.left; y=rect.bottom-d; edge='v'; }
-        pts.push({x,y,edge});
-      }
-      return pts;
-    }
-
-    function buildRingSlots(){
-      const heading=document.querySelector('.hero-behind-copy h2');
-      const layerRect=messageLayer.getBoundingClientRect();
-      const w=layerRect.width||window.innerWidth;
-      const h=layerRect.height||window.innerHeight;
-      const tall=h>w;
-      const gapX=(tall?15:10);
-      const gapY=(tall?9:10);
-      let box={left:32,right:68,top:42,bottom:58};
-      if(heading){
-        const hr=heading.getBoundingClientRect();
-        box={
-          left:(hr.left-layerRect.left)/w*100,
-          right:(hr.right-layerRect.left)/w*100,
-          top:(hr.top-layerRect.top)/h*100,
-          bottom:(hr.bottom-layerRect.top)/h*100
-        };
-      }
-      const midRect={
-        left:clampPercent(box.left-gapX),
-        right:clampPercent(box.right+gapX),
-        top:clampPercent(box.top-gapY),
-        bottom:clampPercent(box.bottom+gapY)
-      };
-      const outerRect={left:6,right:94,top:8,bottom:92};
-
-      const n=MESSAGES.length;
-      const outerCount=Math.ceil(n*0.52);
-      const midCount=n-outerCount;
-      const outerPts=pointsOnRect(outerRect,outerCount);
-      const midPts=pointsOnRect(midRect,midCount);
-      const jitter=()=>(Math.random()*1.2-.6);
-      const ptQueue=outerPts.concat(midPts);
-      const slots=[];
-      for(let i=0;i<n;i++){
-        const p=ptQueue[i];
-        const rot=(Math.random()*16-8);
-        slots.push({x:clampPercent(p.x+jitter()),y:clampPercent(p.y+jitter()),r:rot,edge:p.edge});
-      }
-      return slots;
-    }
 
     function shuffle(arr){
       for(let i=arr.length-1;i>0;i--){
@@ -2496,52 +2427,163 @@ window.addEventListener('load',()=>{
       return arr;
     }
 
-    const slots=buildRingSlots();
-    const n=MESSAGES.length;
+    function pointsOnRect(rect,count){
+      const rw=rect.right-rect.left;
+      const rh=rect.bottom-rect.top;
+      const perimeter=2*(rw+rh);
+      if(count<=0||perimeter<=0) return [];
+      const step=perimeter/count;
+      const pts=[];
+      for(let i=0;i<count;i++){
+        let d=(i+0.5)*step;
+        let x,y;
+        if(d<rw){ x=rect.left+d; y=rect.top; }
+        else if(d<rw+rh){ d-=rw; x=rect.right; y=rect.top+d; }
+        else if(d<rw+rh+rw){ d-=rw+rh; x=rect.right-d; y=rect.bottom; }
+        else { d-=rw+rh+rw; x=rect.left; y=rect.bottom-d; }
+        pts.push({x,y});
+      }
+      return pts;
+    }
 
-    // Route the longest messages to horizontal-edge slots and the shortest
-    // to vertical-edge slots (see the note on pointsOnRect above), then
-    // shuffle within each group so the layout still varies between visits.
-    const byLengthDesc=MESSAGES.map((m,i)=>i).sort((a,b)=>MESSAGES[b].length-MESSAGES[a].length);
-    const hSlotIdx=shuffle(slots.map((s,i)=>i).filter(i=>slots[i].edge==='h'));
-    const vSlotIdx=shuffle(slots.map((s,i)=>i).filter(i=>slots[i].edge==='v'));
-    const slotForMsg=new Array(n);
-    byLengthDesc.forEach((msgIdx,k)=>{
-      slotForMsg[msgIdx]=(k<hSlotIdx.length)?hSlotIdx[k]:vSlotIdx[k-hSlotIdx.length];
+    // Places every message using its REAL rendered (rotated) box, measured
+    // live with a hidden probe element, rather than estimating box size from
+    // character count. Each candidate is checked against the headline and
+    // every already-placed message before being accepted, so the result
+    // can't drift out of sync with actual font/device rendering.
+    function placeMessages(){
+      const heading=document.querySelector('.hero-behind-copy h2');
+      const layerRect=messageLayer.getBoundingClientRect();
+      const W=layerRect.width, H=layerRect.height;
+      if(W<10||H<10) return null;
+
+      let headingBox=null;
+      if(heading){
+        const hr=heading.getBoundingClientRect();
+        headingBox={left:hr.left-layerRect.left,right:hr.right-layerRect.left,top:hr.top-layerRect.top,bottom:hr.bottom-layerRect.top};
+      }
+
+      const probe=document.createElement('span');
+      probe.className='hero-msg';
+      probe.setAttribute('aria-hidden','true');
+      messageLayer.appendChild(probe);
+
+      function measureAt(text,rotDeg,cx,cy){
+        probe.textContent=text;
+        probe.style.left=cx+'px';
+        probe.style.top=cy+'px';
+        probe.style.transform='translate(-50%,-50%) rotate('+rotDeg.toFixed(1)+'deg)';
+        const r=probe.getBoundingClientRect();
+        return {left:r.left-layerRect.left,right:r.right-layerRect.left,top:r.top-layerRect.top,bottom:r.bottom-layerRect.top};
+      }
+      function overlaps(a,b,m){
+        return a.left-m<b.right && a.right+m>b.left && a.top-m<b.bottom && a.bottom+m>b.top;
+      }
+      function withinLayer(box){
+        return box.left>=-2 && box.top>=-2 && box.right<=W+2 && box.bottom<=H+2;
+      }
+
+      // Size the edge margin from the widest message's REAL rendered box
+      // (not a guessed percentage), so candidate points near the layer's
+      // edge never get a box that spills past it.
+      const longestText=MESSAGES.reduce((a,b)=>b.length>a.length?b:a,MESSAGES[0]);
+      const refBox=measureAt(longestText,8,W/2,H/2);
+      const refHalf=Math.max(refBox.right-refBox.left,refBox.bottom-refBox.top)/2;
+      const edgeMargin=Math.min(W,H)*0.4>refHalf*1.15?refHalf*1.15+4:Math.min(W,H)*0.22;
+      const itemMargin=Math.max(10,W*0.02);
+      const headingMargin=Math.max(16,W*0.028);
+      const gapPx=Math.max(20,Math.min(W,H)*0.035);
+
+      const outerRect={left:edgeMargin,right:W-edgeMargin,top:edgeMargin,bottom:H-edgeMargin};
+      const midRect=headingBox?{
+        left:Math.max(edgeMargin,headingBox.left-gapPx),
+        right:Math.min(W-edgeMargin,headingBox.right+gapPx),
+        top:Math.max(edgeMargin,headingBox.top-gapPx),
+        bottom:Math.min(H-edgeMargin,headingBox.bottom+gapPx)
+      }:{left:W*0.15,right:W*0.85,top:H*0.28,bottom:H*0.72};
+
+      const n=MESSAGES.length;
+      const outerCount=Math.ceil(n*0.55);
+      const midCount=n-outerCount;
+      const candidatePool=pointsOnRect(outerRect,outerCount).concat(pointsOnRect(midRect,midCount));
+
+      const order=MESSAGES.map((m,i)=>i).sort((a,b)=>MESSAGES[b].length-MESSAGES[a].length);
+      const placedBoxes=[];
+      const results=new Array(n);
+
+      order.forEach((msgIdx)=>{
+        const text=MESSAGES[msgIdx];
+        const attempts=shuffle(candidatePool.slice());
+        for(let i=0;i<24;i++){
+          attempts.push({x:edgeMargin+Math.random()*(W-2*edgeMargin), y:edgeMargin+Math.random()*(H-2*edgeMargin)});
+        }
+        let chosen=null;
+        for(const cand of attempts){
+          const rot=(Math.random()*16-8);
+          const box=measureAt(text,rot,cand.x,cand.y);
+          if(!withinLayer(box)) continue;
+          if(headingBox && overlaps(box,headingBox,headingMargin)) continue;
+          let ok=true;
+          for(const pb of placedBoxes){ if(overlaps(box,pb,itemMargin)){ ok=false; break; } }
+          if(ok){ chosen={box,x:cand.x,y:cand.y,rot}; break; }
+        }
+        if(!chosen){
+          let best=null,bestScore=Infinity;
+          for(const cand of attempts){
+            const box=measureAt(text,0,cand.x,cand.y);
+            let score=0;
+            if(!withinLayer(box)) score+=2000;
+            if(headingBox && overlaps(box,headingBox,headingMargin)) score+=1000;
+            placedBoxes.forEach((pb)=>{ if(overlaps(box,pb,itemMargin)) score+=1; });
+            if(score<bestScore){ bestScore=score; best={box,x:cand.x,y:cand.y,rot:0}; }
+          }
+          chosen=best;
+        }
+        placedBoxes.push(chosen.box);
+        results[msgIdx]={x:chosen.x,y:chosen.y,rot:chosen.rot};
+      });
+
+      probe.remove();
+      return results;
+    }
+
+    const placements=placeMessages();
+    if(!placements) return;
+
+    const spans=MESSAGES.map((text,i)=>{
+      const span=document.createElement('span');
+      span.className='hero-msg';
+      span.textContent=text;
+      span.style.left=placements[i].x+'px';
+      span.style.top=placements[i].y+'px';
+      span.style.setProperty('--msg-rot',placements[i].rot.toFixed(1)+'deg');
+      messageLayer.appendChild(span);
+      return span;
     });
-    const appearOrder=shuffle(MESSAGES.map((m,i)=>i));
 
+    const appearOrder=shuffle(MESSAGES.map((m,i)=>i));
     let placed=0;
     let heroInView=true;
     let timer=null;
-    const spawnMessage=()=>{
-      if(placed>=MESSAGES.length){
+    const revealNext=()=>{
+      if(placed>=spans.length){
         if(timer) clearInterval(timer);
         return;
       }
       if(!heroInView) return;
-      const msgIndex=appearOrder[placed];
-      const slotIndex=slotForMsg[msgIndex];
+      spans[appearOrder[placed]].classList.add('is-visible');
       placed++;
-      const slot=slots[slotIndex];
-      const span=document.createElement('span');
-      span.className='hero-msg';
-      span.textContent=MESSAGES[msgIndex];
-      span.style.left=slot.x.toFixed(1)+'%';
-      span.style.top=slot.y.toFixed(1)+'%';
-      span.style.setProperty('--msg-rot',slot.r.toFixed(1)+'deg');
-      messageLayer.appendChild(span);
-      if(placed>=MESSAGES.length && timer) clearInterval(timer);
+      if(placed>=spans.length && timer) clearInterval(timer);
     };
     const spawnInterval=window.innerWidth<=760?680:520;
-    timer=setInterval(spawnMessage,spawnInterval);
+    timer=setInterval(revealNext,spawnInterval);
     if('IntersectionObserver' in window){
       const io=new IntersectionObserver((entries)=>{
         entries.forEach((entry)=>{heroInView=entry.isIntersecting;});
       },{threshold:.15});
       io.observe(hero);
     }
-    setTimeout(spawnMessage,300);
+    setTimeout(revealNext,300);
   }
 
   if(!reduce){
@@ -2802,6 +2844,33 @@ window.addEventListener('load',()=>{
   window.addEventListener('scroll',request,{passive:true});
   window.addEventListener('resize',()=>{resize();request();},{passive:true});
   window.addEventListener('pagehide',()=>cancelAnimationFrame(loopId));
+})();
+</script>
+<script>
+(function(){
+  // Defer the two heavy background videos until their section is nearly in
+  // view, instead of downloading tens of MB up front on page load.
+  const videos=Array.from(document.querySelectorAll('video.lazy-video'));
+  if(!videos.length) return;
+  function loadVideo(v){
+    if(v.src) return;
+    v.src=v.dataset.src;
+    v.load();
+    v.play().catch(()=>{});
+  }
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver((entries)=>{
+      entries.forEach((entry)=>{
+        if(entry.isIntersecting){
+          loadVideo(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    },{rootMargin:'600px 0px'});
+    videos.forEach((v)=>io.observe(v));
+  }else{
+    videos.forEach(loadVideo);
+  }
 })();
 </script>
 </body>
