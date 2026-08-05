@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAISON — 静かな高級感</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --cream: #f5f0ea;
+  --dark:  #1a1814;
+  --gold:  #c9a96e;
+  --mid:   #6b6560;
+}
+
+html { scroll-behavior: auto; }
+
+body {
+  background: var(--cream);
+  color: var(--dark);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ─── NAV ─────────────────────────────────────────── */
+nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 200;
+  padding: 1.6rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background .4s, backdrop-filter .4s;
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: .35em;
+  text-decoration: none;
+  opacity: 0;
+  will-change: opacity;
+}
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  opacity: 0;
+  will-change: opacity;
+}
+.nav-links a {
+  color: rgba(255,255,255,.8);
+  text-decoration: none;
+  font-size: .68rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+}
+
+/* ─── HERO ─────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1800&q=85') center/cover no-repeat;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(26,24,20,.22) 0%, rgba(26,24,20,.58) 100%);
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  padding: 0 2rem;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(5rem, 12vw, 10rem);
+  font-weight: 300;
+  letter-spacing: .18em;
+  line-height: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: visible;
+}
+.hero-title .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(52px);
+  will-change: transform, opacity;
+}
+.hero-sub {
+  font-size: clamp(.75rem, 1.4vw, .95rem);
+  letter-spacing: .44em;
+  text-transform: uppercase;
+  margin-top: 1.6rem;
+  opacity: 0;
+  will-change: opacity;
+}
+.hero-cta {
+  margin-top: 3.2rem;
+  display: inline-block;
+  padding: 1rem 3.2rem;
+  border: 1px solid rgba(255,255,255,.52);
+  color: #fff;
+  text-decoration: none;
+  font-size: .72rem;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.scroll-indicator {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  color: rgba(255,255,255,.45);
+  font-size: .6rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  opacity: 0;
+}
+.scroll-line {
+  width: 1px;
+  height: 55px;
+  background: rgba(255,255,255,.18);
+  overflow: hidden;
+  position: relative;
+}
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,.7);
+  animation: lineDown 1.6s ease-in-out infinite;
+}
+@keyframes lineDown { to { top: 100%; } }
+
+/* ─── BRAND — 左右スライド ─────────────────────────── */
+.brand {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 9rem 2rem;
+  background: var(--dark);
+  color: var(--cream);
+  overflow: hidden;
+}
+.brand-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7rem;
+  align-items: center;
+}
+.brand-label {
+  font-size: .68rem;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.6rem;
+  opacity: 0;
+  transform: translateX(-70px);
+  will-change: transform, opacity;
+}
+.brand-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.15;
+  opacity: 0;
+  transform: translateX(-90px);
+  will-change: transform, opacity;
+}
+.brand-body {
+  font-size: .88rem;
+  line-height: 2.1;
+  color: rgba(245,240,234,.6);
+  margin-top: 2rem;
+  opacity: 0;
+  transform: translateX(-60px);
+  will-change: transform, opacity;
+}
+.brand-image-wrap {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  clip-path: inset(0 100% 0 0);
+}
+.brand-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.18);
+  will-change: transform;
+}
+
+/* ─── SHOWCASE — clip-path マスク開放 ─────────────── */
+.showcase {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+.showcase-bg {
+  position: absolute;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1800&q=85') center/cover no-repeat;
+  clip-path: inset(50% 0 50% 0);
+  will-change: clip-path;
+}
+.showcase-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26,24,20,.38);
+}
+.showcase-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  padding: 2rem;
+}
+.showcase-label {
+  font-size: .68rem;
+  letter-spacing: .5em;
+  text-transform: uppercase;
+  opacity: 0;
+  margin-bottom: 1rem;
+}
+.showcase-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: .06em;
+  opacity: 0;
+  transform: translateY(38px) rotate(2.5deg);
+  will-change: transform, opacity;
+}
+
+/* ─── STATS — ライン伸長 + カウントアップ ─────────── */
+.stats {
+  padding: 9rem 2rem;
+  background: var(--cream);
+  overflow: hidden;
+}
+.stats-inner { max-width: 1100px; margin: 0 auto; }
+.stats-header {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  margin-bottom: 5rem;
+  opacity: 0;
+  transform: translateX(-50px);
+  will-change: transform, opacity;
+}
+.stats-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  white-space: nowrap;
+}
+.stat-line {
+  height: 1px;
+  background: var(--gold);
+  flex: 1;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+}
+.stat-item {
+  opacity: 0;
+  transform: translateY(36px);
+  will-change: transform, opacity;
+}
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 300;
+  line-height: 1;
+}
+.stat-suffix {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  color: var(--gold);
+}
+.stat-label {
+  font-size: .72rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-top: .8rem;
+}
+
+/* ─── FEATURES — カード 0.08s ずつ ────────────────── */
+.features {
+  padding: 9rem 2rem;
+  background: #eee8e0;
+  overflow: hidden;
+}
+.features-inner { max-width: 1200px; margin: 0 auto; }
+.features-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+.features-header .flabel {
+  font-size: .68rem;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0;
+}
+.features-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300;
+  opacity: 0;
+  transform: translateY(32px);
+  will-change: transform, opacity;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.card {
+  background: #fff;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(56px);
+  will-change: transform, opacity;
+}
+.card-image {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.12);
+  transition: transform .8s ease;
+  will-change: transform;
+}
+.card:hover .card-image img { transform: scale(1.03); }
+.card-body { padding: 2rem; }
+.card-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  color: rgba(26,24,20,.07);
+  line-height: 1;
+}
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55rem;
+  font-weight: 300;
+  margin: .4rem 0 .8rem;
+}
+.card-desc {
+  font-size: .78rem;
+  line-height: 2;
+  color: var(--mid);
+}
+
+/* ─── GALLERY — パララックス ───────────────────────── */
+.gallery {
+  padding: 8rem 2rem;
+  background: var(--dark);
+  overflow: hidden;
+}
+.gallery-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+.gallery-item { overflow: hidden; }
+.gallery-item:nth-child(2) { margin-top: 5rem; }
+.gallery-item:nth-child(3) { margin-top: -2.5rem; }
+.gallery-item img {
+  width: 100%;
+  display: block;
+  transform: scale(1.18);
+  will-change: transform;
+}
+
+/* ─── ZOOM-OUT — 画像がズームアウト ───────────────── */
+.zoom-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+.zoom-bg {
+  position: absolute;
+  inset: -12%;
+  background: url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1800&q=85') center/cover no-repeat;
+  transform: scale(1.42);
+  will-change: transform;
+}
+.zoom-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26,24,20,.44);
+  z-index: 1;
+}
+.zoom-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 5.5rem 5rem;
+  color: #fff;
+}
+.zoom-text { max-width: 580px; }
+.zoom-label {
+  font-size: .68rem;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateX(-34px);
+  will-change: transform, opacity;
+}
+.zoom-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateX(-46px);
+  will-change: transform, opacity;
+}
+.zoom-body {
+  font-size: .84rem;
+  line-height: 2.1;
+  color: rgba(255,255,255,.62);
+  opacity: 0;
+  transform: translateX(-22px);
+  will-change: transform, opacity;
+}
+
+/* ─── TESTIMONIAL — 回転しながら ──────────────────── */
+.testimonial {
+  padding: 11rem 2rem;
+  background: var(--cream);
+  overflow: hidden;
+}
+.testimonial-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+.quote-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 9rem;
+  line-height: .45;
+  color: var(--gold);
+  opacity: 0;
+  transform: rotate(-18deg) scale(.44);
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.quote-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.55;
+  margin: 2.4rem 0 2rem;
+  opacity: 0;
+  transform: rotate(3deg) translateY(36px);
+  will-change: transform, opacity;
+}
+.quote-author {
+  font-size: .72rem;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--mid);
+  opacity: 0;
+  transform: translateY(22px);
+  will-change: transform, opacity;
+}
+
+/* ─── PROCESS — ラインが伸び + 浮遊 ───────────────── */
+.process {
+  padding: 9rem 2rem;
+  background: var(--dark);
+  color: var(--cream);
+  overflow: hidden;
+}
+.process-inner { max-width: 1100px; margin: 0 auto; }
+.process-label {
+  font-size: .68rem;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  margin-bottom: 1rem;
+}
+.process-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  opacity: 0;
+  transform: translateY(22px);
+  margin-bottom: 4.5rem;
+  will-change: transform, opacity;
+}
+.process-rule {
+  height: 1px;
+  background: var(--gold);
+  width: 0;
+  margin-bottom: 4rem;
+}
+.process-step {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 2.5rem;
+  padding: 2.8rem 0;
+  border-top: 1px solid rgba(245,240,234,.1);
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: transform, opacity;
+}
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.2rem;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+}
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55rem;
+  font-weight: 300;
+  margin-bottom: .6rem;
+}
+.step-desc {
+  font-size: .8rem;
+  line-height: 2.1;
+  color: rgba(245,240,234,.44);
+}
+
+/* ─── BGMOVE — 背景だけゆっくり動く ───────────────── */
+.bgmove {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.bgmove-bg {
+  position: absolute;
+  inset: -22%;
+  background: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1800&q=85') center/cover no-repeat;
+  will-change: transform;
+}
+.bgmove-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26,24,20,.62);
+}
+.bgmove-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  padding: 5rem 2rem;
+}
+.bgmove-label {
+  font-size: .68rem;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 2rem;
+  opacity: 0;
+}
+.bgmove-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 300;
+  line-height: 1.12;
+  opacity: 0;
+  transform: translateY(44px);
+  will-change: transform, opacity;
+}
+
+/* ─── IMG FIRST → TEXT AFTER ───────────────────────── */
+.imgtext {
+  padding: 9rem 2rem;
+  background: var(--cream);
+  overflow: hidden;
+}
+.imgtext-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7rem;
+  align-items: center;
+}
+.imgtext-img-wrap {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(1.07);
+  will-change: transform, opacity;
+}
+.imgtext-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.imgtext-text {
+  opacity: 0;
+  transform: translateX(66px);
+  will-change: transform, opacity;
+}
+.imgtext-label {
+  font-size: .68rem;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.6rem;
+  display: block;
+}
+.imgtext-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+}
+.imgtext-body {
+  font-size: .84rem;
+  line-height: 2.15;
+  color: var(--mid);
+  margin-bottom: 2.5rem;
+}
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: .72rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--dark);
+  text-decoration: none;
+}
+.link-btn::after {
+  content: '';
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  transition: width .5s ease;
+}
+.link-btn:hover::after { width: 72px; }
+
+/* ─── CTA — バウンド ───────────────────────────────── */
+.cta-section {
+  padding: 11rem 2rem;
+  background: var(--dark);
+  text-align: center;
+  overflow: hidden;
+}
+.cta-section .clabel {
+  font-size: .68rem;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 1.6rem;
+  opacity: 0;
+}
+.cta-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.22;
+  margin-bottom: 3.5rem;
+  opacity: 0;
+  transform: translateY(32px);
+  will-change: transform, opacity;
+}
+.cta-btn {
+  display: inline-block;
+  padding: 1.2rem 4rem;
+  background: var(--gold);
+  color: var(--dark);
+  text-decoration: none;
+  font-size: .72rem;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: scale(.76);
+  will-change: transform, opacity;
+}
+
+/* ─── FOOTER ────────────────────────────────────────── */
+footer {
+  padding: 3rem 3rem;
+  background: #0e0d0b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(245,240,234,.3);
+  font-size: .68rem;
+  letter-spacing: .2em;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: rgba(245,240,234,.5);
+  letter-spacing: .35em;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .brand-inner, .imgtext-inner { grid-template-columns: 1fr; gap: 3.5rem; }
+  .cards { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-inner { grid-template-columns: 1fr; }
+  .gallery-item:nth-child(2), .gallery-item:nth-child(3) { margin-top: 0; }
+  .zoom-content { padding: 3rem 2rem; }
+  nav { padding: 1.2rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">MAISON</a>
+  <ul class="nav-links">
+    <li><a href="#">Story</a></li>
+    <li><a href="#">Collection</a></li>
+    <li><a href="#">Atelier</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ① HERO — 画像フェードアップ + 文字単位 + 遅延 -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-title" id="heroTitle">MAISON</h1>
+    <p class="hero-sub">Timeless craft &nbsp;·&nbsp; Quiet luxury</p>
+    <a href="#" class="hero-cta">Discover More</a>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ② BRAND — 左右からスライド -->
+<section class="brand">
+  <div class="brand-inner">
+    <div>
+      <p class="brand-label">Our Philosophy</p>
+      <h2 class="brand-heading">素材と沈黙が<br>語るもの</h2>
+      <p class="brand-body">私たちは余白を恐れません。<br>真の贅沢とは、引き算の美学にあります。<br>厳選された素材、熟練した手仕事、<br>そして時間の流れに耐える設計。</p>
+    </div>
+    <div class="brand-image-wrap">
+      <img class="brand-image" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=85" alt="Brand">
+    </div>
+  </div>
+</section>
+
+<!-- ③ SHOWCASE — マスクが開くように -->
+<section class="showcase">
+  <div class="showcase-bg"></div>
+  <div class="showcase-overlay"></div>
+  <div class="showcase-content">
+    <p class="showcase-label">2024 Collection</p>
+    <h2 class="showcase-title">The Art of<br>Living Well</h2>
+  </div>
+</section>
+
+<!-- ④ STATS — ライン伸長 + 数字カウントアップ -->
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stats-header">
+      <h2>Numbers</h2>
+      <div class="stat-line"></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number"><span class="count" data-target="28">0</span><span class="stat-suffix">年</span></div>
+        <p class="stat-label">の歴史</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span class="count" data-target="4200">0</span><span class="stat-suffix">+</span></div>
+        <p class="stat-label">プロジェクト実績</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span class="count" data-target="98">0</span><span class="stat-suffix">%</span></div>
+        <p class="stat-label">顧客満足度</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span class="count" data-target="12">0</span><span class="stat-suffix">ヶ国</span></div>
+        <p class="stat-label">グローバル展開</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ FEATURES — カードが順番に 0.08s ずつ遅れて -->
+<section class="features">
+  <div class="features-inner">
+    <div class="features-header">
+      <span class="flabel">What We Offer</span>
+      <h2>厳選された<br>三つの柱</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-image"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=700&q=80" alt="" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-num">01</div>
+          <h3 class="card-title">Interior Design</h3>
+          <p class="card-desc">空間の文脈を読み解き、静かな存在感を持つデザインを実現します。素材の選定から照明計画まで一貫した哲学で。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image"><img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=700&q=80" alt="" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-num">02</div>
+          <h3 class="card-title">Bespoke Craft</h3>
+          <p class="card-desc">職人の手と素材が対話することで生まれる唯一無二の作品。工場では生み出せない、時間という価値を宿します。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image"><img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=700&q=80" alt="" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-num">03</div>
+          <h3 class="card-title">Life Consulting</h3>
+          <p class="card-desc">住まいは生き方の鏡です。あなたの価値観を深く理解し、理想の暮らしを一緒に設計するパートナーとして。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ GALLERY — パララックス（列ごとに速度差） -->
+<section class="gallery">
+  <div class="gallery-inner">
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=80" alt="" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=700&q=80" alt="" loading="lazy"></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=700&q=80" alt="" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- ⑦ ZOOM-OUT — 画像がズームアウトしながら -->
+<section class="zoom-section">
+  <div class="zoom-bg"></div>
+  <div class="zoom-overlay"></div>
+  <div class="zoom-content">
+    <div class="zoom-text">
+      <span class="zoom-label">Our Atelier</span>
+      <h2 class="zoom-heading">職人の工房から<br>世界へ</h2>
+      <p class="zoom-body">すべての作品は、私たちの工房で始まります。<br>原材料の吟味、試作、修正。<br>その繰り返しの末に生まれる、揺るぎない品質。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ TESTIMONIAL — 少し回転しながら現れる -->
+<section class="testimonial">
+  <div class="testimonial-inner">
+    <div class="quote-mark">"</div>
+    <p class="quote-text">MAISONのデザインは、静かに語りかけてくる。<br>何も主張せず、ただそこにある。<br>その存在感こそが、真の贅沢だと気づかせてくれた。</p>
+    <p class="quote-author">— Yoshiko Tanaka &nbsp;·&nbsp; Architect</p>
+  </div>
+</section>
+
+<!-- ⑨ PROCESS — 下から浮遊 + ライン伸長 -->
+<section class="process">
+  <div class="process-inner">
+    <p class="process-label">How We Work</p>
+    <h2 class="process-heading">制作プロセス</h2>
+    <div class="process-rule"></div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <div>
+          <h3 class="step-title">Discovery</h3>
+          <p class="step-desc">あなたの生活哲学、好み、空間の使い方を深く理解するところから始まります。2週間の対話セッション。</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <div>
+          <h3 class="step-title">Concept</h3>
+          <p class="step-desc">収集した情報をもとにコンセプトを構築。素材サンプル、空間モデル、カラーパレットを提案します。</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <div>
+          <h3 class="step-title">Craft</h3>
+          <p class="step-desc">職人と連携しながら一点一点を制作。すべての工程で品質確認を行い、妥協のない仕上がりを追求します。</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <div>
+          <h3 class="step-title">Delivery</h3>
+          <p class="step-desc">空間へのインストール、最終調整まで完全サポート。お引渡し後も長期的なケアプランをご提供します。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑩ BGMOVE — 背景だけゆっくり動く -->
+<section class="bgmove">
+  <div class="bgmove-bg"></div>
+  <div class="bgmove-overlay"></div>
+  <div class="bgmove-content">
+    <span class="bgmove-label">Our Vision</span>
+    <h2 class="bgmove-title">時間が経つほど<br>美しくなるものを</h2>
+  </div>
+</section>
+
+<!-- ⑪ 画像先 → 文字あと -->
+<section class="imgtext">
+  <div class="imgtext-inner">
+    <div class="imgtext-img-wrap">
+      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=85" alt="" loading="lazy">
+    </div>
+    <div class="imgtext-text">
+      <span class="imgtext-label">Our Story</span>
+      <h2 class="imgtext-heading">1996年、<br>一人の職人から</h2>
+      <p class="imgtext-body">創業者・間田誠一は、大量生産の時代に抗い、手仕事の価値を信じ続けた木工職人でした。彼の小さな工房から始まったMAISONは、今では国内外のラグジュアリーブランドから信頼を得るアトリエへと成長しています。<br><br>しかし、変わらないものがあります。すべての作品に宿る、人の手の温もりと、時間への敬意。</p>
+      <a href="#" class="link-btn">Read the full story</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑫ CTA — 弾むバウンド -->
+<section class="cta-section">
+  <span class="clabel">Begin Your Journey</span>
+  <h2>あなたの空間を、<br>共に創りましょう</h2>
+  <a href="#" class="cta-btn">お問い合わせはこちら</a>
+</section>
+
+<footer>
+  <div class="footer-logo">MAISON</div>
+  <span>© 2024 MAISON. All rights reserved.</span>
+</footer>
+
+<!-- GSAP + ScrollTrigger CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+gsap.config({ force3D: true });
+
+/* ══════════════════════════════════════════════════════
+   ① HERO
+══════════════════════════════════════════════════════ */
+
+// BG ゆっくりフェードアップ
+gsap.to('.hero-bg', { opacity: 1, duration: 2.4, ease: 'power2.out', delay: 0.1 });
+
+// タイトル — char by char
+const titleEl = document.getElementById('heroTitle');
+const raw = titleEl.textContent.trim();
+titleEl.innerHTML = '';
+[...raw].forEach(ch => {
+  const s = document.createElement('span');
+  s.className = 'char';
+  s.textContent = ch;
+  titleEl.appendChild(s);
+});
+gsap.to('.hero-title .char', {
+  opacity: 1, y: 0,
+  duration: 0.78, ease: 'power3.out',
+  stagger: 0.068, delay: 0.95
+});
+
+// サブコピー — 0.2s 遅れ
+const charCount = titleEl.querySelectorAll('.char').length;
+const subDelay  = 0.95 + charCount * 0.068 + 0.2;
+gsap.to('.hero-sub', { opacity: 1, duration: 1.2, ease: 'power2.out', delay: subDelay });
+
+// CTA — ふわっと最後
+gsap.to('.hero-cta', { opacity: 1, duration: 1, ease: 'back.out(1.4)', delay: subDelay + 0.55 });
+
+// Scroll indicator
+gsap.to('.scroll-indicator', { opacity: 1, duration: 1, delay: subDelay + 1.3 });
+
+// Nav
+gsap.to('.nav-logo',  { opacity: 1, duration: 1, delay: 0.5 });
+gsap.to('.nav-links', { opacity: 1, duration: 1, delay: 0.75 });
+
+// Hero parallax
+gsap.to('.hero-bg', {
+  yPercent: 24, ease: 'none',
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+});
+
+// Nav bg
+ScrollTrigger.create({
+  start: 'top -60px',
+  onUpdate(self) {
+    gsap.to('#mainNav', {
+      background: self.progress > 0 ? 'rgba(26,24,20,.9)' : 'transparent',
+      backdropFilter: self.progress > 0 ? 'blur(14px)' : 'blur(0px)',
+      duration: 0.45
+    });
+  }
+});
+
+/* ══════════════════════════════════════════════════════
+   ② BRAND — 左右スライド
+══════════════════════════════════════════════════════ */
+const brandTL = gsap.timeline({
+  scrollTrigger: { trigger: '.brand', start: 'top 72%', toggleActions: 'play none none none' }
+});
+brandTL
+  .to('.brand-label',      { opacity: 1, x: 0, duration: 0.9,  ease: 'power3.out' })
+  .to('.brand-heading',    { opacity: 1, x: 0, duration: 1.1,  ease: 'power3.out' }, '-=0.6')
+  .to('.brand-body',       { opacity: 1, x: 0, duration: 0.9,  ease: 'power3.out' }, '-=0.55')
+  .to('.brand-image-wrap', { clipPath: 'inset(0 0% 0 0)', duration: 1.6, ease: 'power4.inOut' }, '-=0.75')
+  .to('.brand-image',      { scale: 1, duration: 1.6, ease: 'power4.out' }, '<');
+
+/* ══════════════════════════════════════════════════════
+   ③ SHOWCASE — clip-path マスク開放
+══════════════════════════════════════════════════════ */
+ScrollTrigger.create({
+  trigger: '.showcase',
+  start: 'top 78%',
+  onEnter() {
+    gsap.to('.showcase-bg',    { clipPath: 'inset(0% 0 0% 0)', duration: 1.7, ease: 'power4.inOut' });
+    gsap.to('.showcase-label', { opacity: 1, duration: 0.8, delay: 0.7 });
+    gsap.to('.showcase-title', { opacity: 1, y: 0, rotate: 0, duration: 1.15, ease: 'power3.out', delay: 0.95 });
+  }
+});
+// parallax scrub
+gsap.to('.showcase-bg', {
+  yPercent: 18, ease: 'none',
+  scrollTrigger: { trigger: '.showcase', start: 'top bottom', end: 'bottom top', scrub: true }
+});
+
+/* ══════════════════════════════════════════════════════
+   ④ STATS — ライン伸長 + カウントアップ
+══════════════════════════════════════════════════════ */
+gsap.to('.stats-header', {
+  opacity: 1, x: 0, duration: 1, ease: 'power3.out',
+  scrollTrigger: { trigger: '.stats', start: 'top 75%', toggleActions: 'play none none none' }
+});
+gsap.to('.stat-line', {
+  scaleX: 1, duration: 1.55, ease: 'power3.inOut',
+  scrollTrigger: { trigger: '.stats', start: 'top 75%', toggleActions: 'play none none none' }
+});
+gsap.to('.stat-item', {
+  opacity: 1, y: 0, duration: 0.88, ease: 'power3.out', stagger: 0.13,
+  scrollTrigger: { trigger: '.stats-grid', start: 'top 80%', toggleActions: 'play none none none' }
+});
+document.querySelectorAll('.count').forEach(el => {
+  const target = parseInt(el.dataset.target);
+  ScrollTrigger.create({
+    trigger: el, start: 'top 80%',
+    onEnter() {
+      gsap.to({ v: 0 }, {
+        v: target, duration: 2.3, ease: 'power2.out',
+        onUpdate() { el.textContent = Math.round(this.targets()[0].v).toLocaleString(); }
+      });
+    }
+  });
+});
+
+/* ══════════════════════════════════════════════════════
+   ⑤ FEATURES — カード 0.08s stagger
+══════════════════════════════════════════════════════ */
+gsap.to('.flabel', {
+  opacity: 1, duration: 0.8,
+  scrollTrigger: { trigger: '.features-header', start: 'top 80%', toggleActions: 'play none none none' }
+});
+gsap.to('.features-header h2', {
+  opacity: 1, y: 0, duration: 1.05, ease: 'power3.out',
+  scrollTrigger: { trigger: '.features-header', start: 'top 80%', toggleActions: 'play none none none' }
+});
+gsap.to('.card', {
+  opacity: 1, y: 0, duration: 1.05, ease: 'power3.out', stagger: 0.08,
+  scrollTrigger: { trigger: '.cards', start: 'top 82%', toggleActions: 'play none none none' }
+});
+
+/* ══════════════════════════════════════════════════════
+   ⑥ GALLERY — パララックス（列ごとに速度差）
+══════════════════════════════════════════════════════ */
+const gSpeeds = [0.14, -0.2, 0.1];
+document.querySelectorAll('.gallery-item').forEach((item, i) => {
+  gsap.fromTo(item,
+    { opacity: 0, x: i % 2 === 0 ? -55 : 55 },
+    { opacity: 1, x: 0, duration: 1.15, ease: 'power3.out',
+      scrollTrigger: { trigger: item, start: 'top 88%', toggleActions: 'play none none none' } }
+  );
+  gsap.to(item.querySelector('img'), {
+    yPercent: gSpeeds[i] * 100, ease: 'none',
+    scrollTrigger: { trigger: item, start: 'top bottom', end: 'bottom top', scrub: true }
+  });
+});
+
+/* ══════════════════════════════════════════════════════
+   ⑦ ZOOM-OUT — 画像がズームアウトしながら
+══════════════════════════════════════════════════════ */
+gsap.to('.zoom-bg', {
+  scale: 1, ease: 'none',
+  scrollTrigger: { trigger: '.zoom-section', start: 'top bottom', end: 'bottom top', scrub: true }
+});
+const zoomTL = gsap.timeline({
+  scrollTrigger: { trigger: '.zoom-section', start: 'top 68%', toggleActions: 'play none none none' }
+});
+zoomTL
+  .to('.zoom-label',   { opacity: 1, x: 0, duration: 0.85, ease: 'power3.out' })
+  .to('.zoom-heading', { opacity: 1, x: 0, duration: 1.1,  ease: 'power3.out' }, '-=0.5')
+  .to('.zoom-body',    { opacity: 1, x: 0, duration: 0.95, ease: 'power3.out' }, '-=0.55');
+
+/* ══════════════════════════════════════════════════════
+   ⑧ TESTIMONIAL — 少し回転しながら現れる
+══════════════════════════════════════════════════════ */
+const testTL = gsap.timeline({
+  scrollTrigger: { trigger: '.testimonial', start: 'top 76%', toggleActions: 'play none none none' }
+});
+testTL
+  .to('.quote-mark',   { opacity: 1, rotate: 0, scale: 1, duration: 1.15, ease: 'back.out(2.4)' })
+  .to('.quote-text',   { opacity: 1, y: 0, rotate: 0, duration: 1.35, ease: 'power3.out' }, '-=0.55')
+  .to('.quote-author', { opacity: 1, y: 0, duration: 0.88, ease: 'power3.out' }, '-=0.6');
+
+/* ══════════════════════════════════════════════════════
+   ⑨ PROCESS — 下から浮遊 + ライン横伸長
+══════════════════════════════════════════════════════ */
+gsap.to('.process-label', {
+  opacity: 1, duration: 0.85,
+  scrollTrigger: { trigger: '.process', start: 'top 75%', toggleActions: 'play none none none' }
+});
+gsap.to('.process-heading', {
+  opacity: 1, y: 0, duration: 1.05, ease: 'power3.out',
+  scrollTrigger: { trigger: '.process', start: 'top 75%', toggleActions: 'play none none none' }
+});
+gsap.to('.process-rule', {
+  width: '100%', duration: 1.6, ease: 'power3.inOut',
+  scrollTrigger: { trigger: '.process-heading', start: 'top 75%', toggleActions: 'play none none none' }
+});
+gsap.to('.process-step', {
+  opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.17,
+  scrollTrigger: { trigger: '.process-steps', start: 'top 80%', toggleActions: 'play none none none' }
+});
+
+/* ══════════════════════════════════════════════════════
+   ⑩ BGMOVE — 背景だけゆっくり動く（scrub）
+══════════════════════════════════════════════════════ */
+gsap.to('.bgmove-bg', {
+  xPercent: 9, yPercent: -6, ease: 'none',
+  scrollTrigger: { trigger: '.bgmove', start: 'top bottom', end: 'bottom top', scrub: 2.5 }
+});
+gsap.to('.bgmove-label', {
+  opacity: 1, duration: 0.9,
+  scrollTrigger: { trigger: '.bgmove', start: 'top 76%', toggleActions: 'play none none none' }
+});
+gsap.to('.bgmove-title', {
+  opacity: 1, y: 0, duration: 1.35, ease: 'power3.out',
+  scrollTrigger: { trigger: '.bgmove', start: 'top 76%', toggleActions: 'play none none none' }
+});
+
+/* ══════════════════════════════════════════════════════
+   ⑪ 画像先 → 文字あと
+══════════════════════════════════════════════════════ */
+ScrollTrigger.create({
+  trigger: '.imgtext', start: 'top 74%',
+  onEnter() {
+    gsap.to('.imgtext-img-wrap', { opacity: 1, scale: 1, duration: 1.35, ease: 'power3.out' });
+    gsap.to('.imgtext-text',     { opacity: 1, x: 0,    duration: 1.15, ease: 'power3.out', delay: 0.55 });
+  }
+});
+
+/* ══════════════════════════════════════════════════════
+   ⑫ CTA — elastic bounce
+══════════════════════════════════════════════════════ */
+gsap.to('.clabel', {
+  opacity: 1, duration: 0.9,
+  scrollTrigger: { trigger: '.cta-section', start: 'top 76%', toggleActions: 'play none none none' }
+});
+gsap.to('.cta-section h2', {
+  opacity: 1, y: 0, duration: 1.1, ease: 'power3.out',
+  scrollTrigger: { trigger: '.cta-section', start: 'top 76%', toggleActions: 'play none none none' }
+});
+gsap.to('.cta-btn', {
+  opacity: 1, scale: 1, duration: 1.2, ease: 'elastic.out(1, 0.46)',
+  scrollTrigger: { trigger: '.cta-btn', start: 'top 87%', toggleActions: 'play none none none' }
+});
+
+// CTA ホバーバウンス
+const ctaBtn = document.querySelector('.cta-btn');
+ctaBtn.addEventListener('mouseenter', () => gsap.to(ctaBtn, { scale: 1.07, duration: 0.28, ease: 'power2.out' }));
+ctaBtn.addEventListener('mouseleave', () => gsap.to(ctaBtn, { scale: 1,    duration: 0.55, ease: 'elastic.out(1,.5)' }));
+</script>
+</body>
+</html>

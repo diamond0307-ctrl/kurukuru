@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 150" role="img" aria-label="くるくる">
+  <g fill="#1a1114">
+    <rect x="12" y="24" width="48" height="48"/>
+    <rect x="68" y="24" width="48" height="48"/>
+    <rect x="12" y="80" width="48" height="48"/>
+    <rect x="168" y="24" width="48" height="48"/>
+    <rect x="224" y="24" width="48" height="48"/>
+    <rect x="112" y="80" width="48" height="48"/>
+    <rect x="224" y="80" width="48" height="48"/>
+    <rect x="328" y="24" width="48" height="48"/>
+    <rect x="384" y="24" width="48" height="48"/>
+    <rect x="328" y="80" width="48" height="48"/>
+    <path d="M384 80h48l-48 48z"/>
+  </g>
+</svg>
