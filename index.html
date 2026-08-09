@@ -2102,12 +2102,17 @@ section[aria-labelledby="voice-title"] .voices::after{
   border-radius: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
-  transition: opacity .8s cubic-bezier(.2,.7,.3,1);
-  will-change: opacity;
+  filter: blur(10px);
+  will-change: opacity, transform, filter;
 }
 
 .hero-blob.is-visible {
-  opacity: .88;
+  animation: heroBlobFade var(--fade-duration, 2.1s) cubic-bezier(.22,1,.36,1) forwards;
+}
+
+@keyframes heroBlobFade {
+  0%   { opacity: 0;   filter: blur(10px); transform: translate(-50%, calc(-50% + 6px)) scale(.96); }
+  100% { opacity: .6;  filter: blur(0);    transform: translate(-50%, -50%) scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2142,16 +2147,17 @@ section[aria-labelledby="voice-title"] .voices::after{
   letter-spacing: .03em;
   line-height: 1.45;
   opacity: 0;
-  will-change: opacity, transform;
+  filter: blur(10px);
+  will-change: opacity, transform, filter;
 }
 
 .hero-msg.is-visible {
-  animation: heroMsgFade 1.1s cubic-bezier(.2,.7,.3,1) forwards;
+  animation: heroMsgFade var(--fade-duration, 2.1s) cubic-bezier(.22,1,.36,1) forwards;
 }
 
 @keyframes heroMsgFade {
-  0%   { opacity: 0;   transform: translate(-50%, calc(-50% + 10px)) scale(.9) rotate(var(--msg-rot, 0deg)); }
-  100% { opacity: .92; transform: translate(-50%, -50%) scale(1) rotate(var(--msg-rot, 0deg)); }
+  0%   { opacity: 0;   filter: blur(10px); transform: translate(-50%, calc(-50% + 6px)) scale(.97) rotate(var(--msg-rot, 0deg)); }
+  100% { opacity: .92; filter: blur(0);    transform: translate(-50%, -50%) scale(1) rotate(var(--msg-rot, 0deg)); }
 }
 
 @media (max-width: 760px) {
@@ -2429,6 +2435,7 @@ window.addEventListener('load',()=>{
     // circle color, split into a band above the headline and a band below it so
     // neither the text nor its circle ever crosses "大切なひとへ、優しい流れを贈る。".
     // color:null means an outline-only circle (no fill), used for the one accent slot.
+    // Colors are washed toward white at render time (see pastel()) for a watercolor feel.
     const LAYOUT=[
       {x:65,y:66,rot:-4,color:'#FFEE80'},
       {x:28,y:80,rot:5, color:'#B99CBB'},
@@ -2446,15 +2453,44 @@ window.addEventListener('load',()=>{
       {x:72,y:36,rot:-4,color:'#FF5959'}
     ];
 
+    // Mixes a hex color toward white and returns an rgba() with a light, watercolor opacity.
+    const pastel=(hex,alpha)=>{
+      const n=parseInt(hex.slice(1),16);
+      const mix=(c)=>Math.round(c+(255-c)*.45);
+      const r=mix((n>>16)&255),g=mix((n>>8)&255),b=mix(n&255);
+      return 'rgba('+r+','+g+','+b+','+alpha+')';
+    };
+
+    // Sizes a circle around its message so the text never breaks out of it: the
+    // circle's diameter covers the text box's diagonal, so a wide one-liner or a
+    // tall three-line phrase both stay fully enclosed regardless of length.
+    const sizeBlobToMessage=(span,blob)=>{
+      const rect=span.getBoundingClientRect();
+      if(!rect.width||!rect.height) return;
+      const mobile=window.innerWidth<=760;
+      const padding=mobile?22:30;
+      const min=mobile?64:90;
+      // No upper cap: the circle must always fully enclose the text, and the
+      // text's own CSS max-width already bounds how large the diagonal can get.
+      const diagonal=Math.sqrt(rect.width*rect.width+rect.height*rect.height);
+      const diameter=Math.max(min,Math.round(diagonal+padding));
+      blob.style.width=diameter+'px';
+      blob.style.height=diameter+'px';
+    };
+
     const blobs=[];
     const spans=MESSAGES.map((text,i)=>{
       const pos=LAYOUT[i];
+      // A shared, slightly randomized fade duration per pair keeps the "breathing"
+      // feel from looking mechanically identical circle to circle.
+      const duration=(1.8+Math.random()*.6).toFixed(2)+'s';
       const span=document.createElement('span');
       span.className='hero-msg';
       span.textContent=text;
       span.style.left=pos.x+'%';
       span.style.top=pos.y+'%';
       span.style.setProperty('--msg-rot',pos.rot+'deg');
+      span.style.setProperty('--fade-duration',duration);
       messageLayer.appendChild(span);
 
       if(blobLayer){
@@ -2462,14 +2498,16 @@ window.addEventListener('load',()=>{
         blob.className='hero-blob';
         blob.style.left=pos.x+'%';
         blob.style.top=pos.y+'%';
+        blob.style.setProperty('--fade-duration',duration);
         if(pos.color){
-          blob.style.background=pos.color;
+          blob.style.background=pastel(pos.color,.58);
         }else{
           blob.style.background='transparent';
           blob.style.boxSizing='border-box';
-          blob.style.border='2px solid #1a1a1a';
+          blob.style.border='2px solid rgba(26,17,20,.45)';
         }
         blobLayer.appendChild(blob);
+        sizeBlobToMessage(span,blob);
         blobs.push(blob);
       } else {
         blobs.push(null);
@@ -2477,9 +2515,21 @@ window.addEventListener('load',()=>{
       return span;
     });
 
+    if(blobLayer){
+      let resizeFrame=0;
+      window.addEventListener('resize',()=>{
+        cancelAnimationFrame(resizeFrame);
+        resizeFrame=requestAnimationFrame(()=>{
+          spans.forEach((span,i)=>{if(blobs[i]) sizeBlobToMessage(span,blobs[i]);});
+        });
+      },{passive:true});
+    }
+
     // Reveal order radiates out from the headline ("大切なひとへ、優しい流れを贈る。"):
     // nearest-to-center circles appear first, then each ring further out, sweeping
-    // by angle within a ring so it reads as expanding outward, not scattered.
+    // by angle within a ring so it reads as expanding outward, not scattered. Each
+    // fade runs far longer than the spawn interval, so several are always mid-fade
+    // together, like ripples spreading rather than items popping one by one.
     const appearOrder=LAYOUT
       .map((pos,i)=>({i,d:Math.hypot(pos.x-50,pos.y-50),a:Math.atan2(pos.y-50,pos.x-50)}))
       .sort((p,q)=>p.d-q.d||p.a-q.a)
@@ -2499,7 +2549,7 @@ window.addEventListener('load',()=>{
       placed++;
       if(placed>=spans.length && timer) clearInterval(timer);
     };
-    const spawnInterval=window.innerWidth<=760?680:520;
+    const spawnInterval=window.innerWidth<=760?260:330;
     timer=setInterval(revealNext,spawnInterval);
     if('IntersectionObserver' in window){
       const io=new IntersectionObserver((entries)=>{
@@ -2507,11 +2557,11 @@ window.addEventListener('load',()=>{
       },{threshold:.15});
       io.observe(hero);
     }
-    setTimeout(revealNext,300);
+    setTimeout(revealNext,150);
   }
 
   if(!reduce){
-    setTimeout(initHeroMessages,3600);
+    setTimeout(initHeroMessages,2800);
   }
 });
 </script>
