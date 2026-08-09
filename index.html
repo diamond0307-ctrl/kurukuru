@@ -2461,6 +2461,24 @@ window.addEventListener('load',()=>{
       return 'rgba('+r+','+g+','+b+','+alpha+')';
     };
 
+    // Lifts the whole circle+message group up off the section's bottom edge
+    // (30-60px, scaling gently with viewport width) while leaving the reveal
+    // animation and each circle's position relative to its neighbors untouched.
+    // Mobile has more headroom above the headline, so it takes the fuller lift;
+    // wide viewports sit the bottom-band circles closer to the headline row, so
+    // the lift eases off there to keep the "balance with the headline" intact.
+    const groupLiftPx=()=>{
+      const w=window.innerWidth;
+      return w<=760 ? 44 : Math.max(24,34-(w-760)*0.02);
+    };
+
+    // Sets an element's anchor point from its hand-placed (x%, y%) spot, minus
+    // the group lift, so the whole layout shifts up as a single unit.
+    const positionEl=(el,pos)=>{
+      el.style.left=pos.x+'%';
+      el.style.top='calc('+pos.y+'% - '+groupLiftPx().toFixed(1)+'px)';
+    };
+
     // Sizes a circle around its message so the text never breaks out of it: the
     // circle's diameter covers the text box's diagonal, so a wide one-liner or a
     // tall three-line phrase both stay fully enclosed regardless of length.
@@ -2487,8 +2505,7 @@ window.addEventListener('load',()=>{
       const span=document.createElement('span');
       span.className='hero-msg';
       span.textContent=text;
-      span.style.left=pos.x+'%';
-      span.style.top=pos.y+'%';
+      positionEl(span,pos);
       span.style.setProperty('--msg-rot',pos.rot+'deg');
       span.style.setProperty('--fade-duration',duration);
       messageLayer.appendChild(span);
@@ -2496,8 +2513,7 @@ window.addEventListener('load',()=>{
       if(blobLayer){
         const blob=document.createElement('span');
         blob.className='hero-blob';
-        blob.style.left=pos.x+'%';
-        blob.style.top=pos.y+'%';
+        positionEl(blob,pos);
         blob.style.setProperty('--fade-duration',duration);
         if(pos.color){
           blob.style.background=pastel(pos.color,.58);
@@ -2520,7 +2536,14 @@ window.addEventListener('load',()=>{
       window.addEventListener('resize',()=>{
         cancelAnimationFrame(resizeFrame);
         resizeFrame=requestAnimationFrame(()=>{
-          spans.forEach((span,i)=>{if(blobs[i]) sizeBlobToMessage(span,blobs[i]);});
+          spans.forEach((span,i)=>{
+            const pos=LAYOUT[i];
+            positionEl(span,pos);
+            if(blobs[i]){
+              positionEl(blobs[i],pos);
+              sizeBlobToMessage(span,blobs[i]);
+            }
+          });
         });
       },{passive:true});
     }
