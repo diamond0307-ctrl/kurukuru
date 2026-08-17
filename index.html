@@ -2230,12 +2230,36 @@ section[aria-labelledby="voice-title"] .voices::after{
   transform: translateY(26px);
 }
 
-.hero-video-intro-title.is-visible .hero-video-intro-line {
+.hero-video-intro-cta {
+  margin: clamp(22px, 4vw, 36px) 0 0;
+  opacity: 0;
+  transform: translateY(26px);
+}
+
+.hero-video-intro-cta .button {
+  background: #000 !important;
+  border-color: #000 !important;
+  color: #fff !important;
+}
+
+.hero-video-intro-cta .button:hover,
+.hero-video-intro-cta .button:focus-visible {
+  background: #fff !important;
+  border-color: #000 !important;
+  color: #000 !important;
+}
+
+.hero-video-intro-copy.is-visible .hero-video-intro-line,
+.hero-video-intro-copy.is-visible .hero-video-intro-cta {
   animation: heroVideoIntroRise 1.15s cubic-bezier(.22,.8,.32,1) forwards;
 }
 
-.hero-video-intro-title.is-visible .hero-video-intro-line:nth-child(2) {
+.hero-video-intro-copy.is-visible .hero-video-intro-line:nth-child(2) {
   animation-delay: .18s;
+}
+
+.hero-video-intro-copy.is-visible .hero-video-intro-cta {
+  animation-delay: .34s;
 }
 
 @keyframes heroVideoIntroRise {
@@ -2251,10 +2275,14 @@ section[aria-labelledby="voice-title"] .voices::after{
     font-size: clamp(18px, 6.6vw, 28px);
     line-height: 1.6;
   }
+  .hero-video-intro-cta .button {
+    width: 100%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-video-intro-line {
+  .hero-video-intro-line,
+  .hero-video-intro-cta {
     opacity: 1;
     transform: none;
     animation: none !important;
@@ -2271,6 +2299,7 @@ section[aria-labelledby="voice-title"] .voices::after{
   <div class="hero-video-intro-overlay" aria-hidden="true"></div>
   <div class="hero-video-intro-copy">
     <h1 id="hero-title" class="hero-video-intro-title"><span class="hero-video-intro-line">「これから」を応援する、</span><span class="hero-video-intro-line">贈りもの。</span></h1>
+    <p class="hero-video-intro-cta"><a class="button gift-cta" href="https://shop.madadesignstore.com/" target="_blank" rel="noopener">ギフトとして選ぶ</a></p>
   </div>
 </section>
 <section class="hero-follow-video-section" aria-label="くるくるが空間で回る様子">
@@ -2925,13 +2954,13 @@ window.addEventListener('load',()=>{
   const section=document.querySelector('.hero-video-intro');
   if(!section) return;
   const video=section.querySelector('.hero-video-intro-media');
-  const title=section.querySelector('.hero-video-intro-title');
-  if(!title) return;
+  const copy=section.querySelector('.hero-video-intro-copy');
+  if(!copy) return;
   let revealed=false;
   function reveal(){
     if(revealed) return;
     revealed=true;
-    setTimeout(()=>title.classList.add('is-visible'),1000);
+    setTimeout(()=>copy.classList.add('is-visible'),1000);
   }
   if(video){
     video.addEventListener('playing',reveal,{once:true});
